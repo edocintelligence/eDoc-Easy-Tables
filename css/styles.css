@@ -1,0 +1,146 @@
+.each_panel,.add_panel{
+	width: 210px;
+	float: left;
+	border: 1px solid gray;
+	text-align: left;
+	padding:10px;
+	margin-right:10px;
+	min-height:120px;
+	margin-top:10px;
+}
+.each_panel p{
+	margin:0px;
+	padding:0px;
+}
+.top_panel,.main_panel,.bottom_panel{
+	float:left;
+	padding:10px 0px;
+	width: 100%;	
+}
+.create_panel{
+	padding: 10px;
+	border: 1px solid gray;	
+	overflow: hidden;	
+	margin-right:10px;
+}
+.content_table{
+	width: 100%;
+	float:left;
+	padding:20px 0px;
+}
+.dp_002_wrapper input{
+	line-height: 1.5em;
+}
+.table_show table{
+	border-collapse:collapse;
+	min-width:500px;
+}
+.table_show table,.table_show table td,.table_show table th
+{
+	border:1px solid black;
+	padding:10px;
+	text-align:left;
+}
+#ajaxloading,.ajaxloading{
+	position:relative;
+	top:7px;
+	display:none;
+}
+#add_new{
+	display:none;
+}
+#submit_add_row{
+	display:none;
+}
+.right_session{
+	width:700px;
+	float:right;
+}
+.right_session .haf_div{
+	width:45%;
+	margin-right:5%;
+	float: left;
+
+}
+.right_session .haf_div label{
+	width:100%;
+	float:left;
+}
+.content_table input[type=text]{
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.just_new{
+	position: absolute;
+}
+.email_send_link{
+	float: left;
+	margin-top: 15px !important;
+
+}
+.create_panel h3{
+	margin:0px;
+}
+.table_show a{
+	text-decoration: none;
+	text-align: center;
+}
+.dp_002_wrapper h1{
+	font-size: 23px;
+	font-weight: 400;
+	padding: 9px 15px 4px 0;
+	line-height: 29px;
+}
+.table_show table{
+	min-width: 700px;
+}
+.main_panel{
+	width: 100%;
+	float:left;
+}
+.top_panel{
+	width: 230px;
+}
+.inactive{
+	display: none;
+}
+.panel{
+	position: absolute;
+	top: 0px;
+	background-color: #f1f1f1;
+	left:0px;
+	width: 100%;
+	height:100%;
+}
+.main-panel{
+	width: 100%;
+	display: block;
+	box-sizing:border-box;
+	padding: 20px 0px;
+}
+.right-panel{
+	width:400px;
+	box-sizing:border-box;
+	height: 300px;
+	float:right;
+	padding:20px;
+	border: 2px solid red;
+	margin-right:10px;
+	text-align: center;
+	font-size: 16px;
+}
