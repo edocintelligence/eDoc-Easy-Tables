@@ -2,7 +2,6 @@ jQuery(document).ready(function($){
 	$('.inactive').remove();
 	$('#create_new_column').click(function(){
 		$('.add_panel').before("<div class='each_panel'>"+$('#first_panel').html()+"</div>");
-		//$('.just_new')
 	});
 	$('#unlocknow').click(function(){
 		var data = {
@@ -10,12 +9,16 @@ jQuery(document).ready(function($){
 			key	: $('#keyunlock').val()
 		};
 		$.post(ajaxurl, data, function(response) {
-			if(response == "YES"){
-				$('.panel').animate({top:"-100%"});
+			if(response != "YES"){
+				alert(response);	
 			}else{
-				alert(response);
+				alert("Thank you , Your Key accepted");
 			}
 		});
+	});
+	$("body").on("click", ".restartload", function(event){
+		window.location.reload()
+		return false;
 	});
 	$('.bottom_panel input').click(function(){
 		$('#ajaxloading').show();
@@ -57,7 +60,7 @@ jQuery(document).ready(function($){
 		$.post(ajaxurl, data, function(response) {
 			$('.reponse').html(response);
 			$('#ajaxloading').hide();
-			window.localtion.reload();
+			//window.location.reload();
 		});
 		
 	});

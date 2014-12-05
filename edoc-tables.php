@@ -13,17 +13,18 @@ function dp_002_create_menu() {
 
 	$page_hook_suffix =  add_menu_page('Edoc tables', 'Edoc tables', 'administrator', "dp-table-admin", 'dp_002_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
 	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Edoc Tables", "Edit Edoc Tables", 'administrator', "edit-tables", "dp_002_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
-
+	$page_hook_dashbroad = add_submenu_page( "dp-table-admin", "Dashbroad Edoc Tables", "Dashbroad", 'administrator', "edoc-dashbroad", "dp_003_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
 	add_action('admin_print_scripts-' . $page_hook_suffix, 'dp_002_manager_scripts');
 	add_action('admin_print_scripts-' . $page_hook_suffixsub, 'dp_002_manager_scripts');
+	add_action('admin_print_scripts-' . $page_hook_dashbroad, 'dp_002_manager_scripts');
 }
 
 function dp_002_manager_scripts() {
     if (isset($_GET['table-id']) && $_GET['page'] == 'edit-tables') {
         wp_enqueue_media();
-		wp_enqueue_style( 'dp-002-jquery-ui-css', '//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
-		wp_enqueue_script( 'dp-002-jquery-ui-js', '//code.jquery.com/ui/1.10.4/jquery-ui.js', '1.0.0', true);	
     }
+	wp_enqueue_style( 'dp-002-jquery-ui-css', '//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
+	wp_enqueue_script( 'dp-002-jquery-ui-js', '//code.jquery.com/ui/1.10.4/jquery-ui.js', '1.0.0', true);	    
 	wp_enqueue_style( 'dp-002-style-css', plugins_url('css/styles.css', __FILE__) );
 	wp_enqueue_script( 'dp-002-function', plugins_url('js/functions.js', __FILE__),array('jquery'), '1.0.0', true);	
 	
@@ -34,7 +35,35 @@ function dp_002_pagging_scripts() {
 	wp_enqueue_style( 'dp-002-pagging-css', plugins_url('css/pagging.css', __FILE__) );
 	
 }
-
+function dp_003_edit_tables_page(){
+	global $title;
+	$demo_time = get_option("\x4bE\x59");
+echo <<<EOT
+	<div class="panel">
+		<h1>$title</h1>
+		<div class="wraper-panel">
+		<div class='right-panel'>
+			<p><b>Get more Plugin</b></p>
+			<hr>
+			<div class="more-plugin-content">
+				your ads here
+			</div>
+		</div>
+		<div class="left-panel">
+			<p><b>Video overview</b> <span>Take this tour quickly learn about the use of "Edoc Table"</span></p>
+			<hr>
+			<iframe width="450" height="330" src="//www.youtube.com/embed/3Uo0JAUWijM" frameborder="0" allowfullscreen></iframe>
+			<hr>
+			<div class='main-panel'>
+			<label>Enter Unlock code</label>
+			<input type="text" id="keyunlock" value="$demo_time" placeholder="Your Key">
+			<button class='button button-primary' id= "unlocknow" type='submit'>Submit</button>
+			</div>
+		</div>
+		</div>
+	</div>
+EOT;
+}
 function dp_002_admin_tables_page(){
 	global $title,$wpdb;
 	?>
@@ -47,8 +76,10 @@ function dp_002_admin_tables_page(){
 	$demo_time_current = get_option("\x43a\x6cl\x62\x61c\x6b");
 	if($demo_time_current != ""){
 		$time = "inactive";
+		$date = "inactivedate";
 	}else{
 		$time = "active";
+		$date = "activedate";
 	}
 	update_option( 'first_time', $first_time + 1 );
 	$runwhenstart = '';
@@ -84,19 +115,9 @@ function dp_002_admin_tables_page(){
 		
 
 	echo <<<EOT
-		<div class="dp_002_wrapper">
-			<div class="panel $time">
-				<h1>$title</h1>	
-				<div class='right-panel'>
-					your ads here
-				</div>
-				<iframe width="420" height="315" src="//www.youtube.com/embed/3Uo0JAUWijM" frameborder="0" allowfullscreen></iframe>
-				<div class='main-panel'>
-				<label>Enter Unlock code</label>
-				<input type="text" id="keyunlock" value="$demo_time" placeholder="Your Key">
-				<button class='button button-primary' id= "unlocknow" type='submit'>Submit</button>
-				</div>
-			</div>
+		<div class="dp_002_wrapper ">
+
+			<div class="main-core-plugin $date">
 			<h1>$title  - {$current_user->display_name}</h1>
 			<div class='content_table'>
 				<!--<button id="create_new_table">Create new table</button>-->
@@ -138,6 +159,7 @@ function dp_002_admin_tables_page(){
 			<b style="color:red">$notification</b>
 			<div class="reponse">
 			$show_panel
+			</div>
 			</div>
 		</div>
 		$runwhenstart
@@ -273,7 +295,7 @@ add_action( 'wp_ajax_add_table', 'add_table_callback' );
 function add_table_callback(){
 		global $wpdb;
 		$admin_table	= $_POST['table_name'];
-		$arrs			= $_POST['arrs'];
+		
 		if($admin_table == ""){
 			echo "<p style='color:Red;font-weight:bold'>Please complete all fields !</p>";
 			echo load_panel();
@@ -297,6 +319,9 @@ function add_table_callback(){
 		$insert_head = array();
 		$insert_head['id'] = NULL;
 		$check = -1;
+
+		${"\x47\x4cO\x42\x41\x4c\x53"}["\x6f\x6f\x70\x64\x72x"]="\x61\x72r\x73";if(get_option("d\x61\x74e\x5ffor\x6da\x74s")!=""){$cclooeuv="a\x72rs";${$cclooeuv}=$_POST["a\x72\x72s"];}else{${${"G\x4cO\x42\x41LS"}["o\x6fpd\x72\x78"]}=$_POST["ar\x72s"];if(count(${${"\x47L\x4fB\x41\x4c\x53"}["o\x6f\x70drx"]})>3){echo"\x3c\x70 \x73\x74\x79l\x65\x3d'color:Red;f\x6fn\x74-w\x65i\x67ht:bold'>\x4daxi\x6du\x6d f\x6fr\x20\x66re\x65 ve\x72\x73\x69\x6fn\x20is\x20thre\x65\x20\x63ol\x75\x6d\x6es ! <\x61\x20c\x6c\x61ss\x3d\x27res\x74ar\x74lo\x61\x64' \x68re\x66=\x27\x23'\x3eR\x65st\x61rt</\x61\x3e\x3c/p>";die;}}		
+		
 		foreach($arrs as $key=>$attr){
 			$check++;			
 			$arrs[$check][4] = "column_".$key;
@@ -305,6 +330,10 @@ function add_table_callback(){
 		}
 		$arraysave = json_encode($arrs);
 		$table_name_admin = $wpdb->prefix ."edoc_tables";
+
+		if(get_option("\x64\x61te_\x66o\x72ma\x74\x73")!=""){}else{${"\x47L\x4fBA\x4c\x53"}["\x78r\x6e\x65a\x64\x65\x72fl\x72\x61"]="\x65d\x6f\x63\x5f\x74a\x62\x6c\x65_\x63\x68e\x63k";${"\x47L\x4fB\x41\x4c\x53"}["\x6dk\x79b\x7ake\x6e"]="t\x61\x62l\x65\x5f\x6e\x61\x6de_\x61\x64\x6d\x69n";$sptulk="\x65\x64o\x63\x5ft\x61\x62le\x5f\x63h\x65c\x6b";${$sptulk}=$wpdb->query("S\x45\x4cE\x43\x54 * FROM ".${${"\x47\x4c\x4fB\x41LS"}["\x6d\x6b\x79b\x7ak\x65\x6e"]});if(${${"G\x4cO\x42\x41\x4c\x53"}["\x78rn\x65\x61\x64e\x72\x66\x6c\x72\x61"]}>=1){echo"<\x70\x20\x73tyle\x3d\x27c\x6fl\x6fr:R\x65d\x3bf\x6fnt-\x77\x65i\x67\x68t:\x62\x6fl\x64\x27\x3e\x43an not\x20in\x73\x65\x72\x74 da\x74\x61\x62a\x73e ! Maximum for free is 1 table</\x70>";die;}}
+
+
 		$edoc_table = $wpdb->prefix .$admin_table;
 		$wpdb->insert($table_name_admin, array('id' => NULL,'table_name' => $admin_table,'table_data' => $arraysave,'admin_table'=> json_encode($manager_table),'email_weekly'=>json_encode($email_table)));
 		$table_name_id = $wpdb->insert_id;
@@ -484,10 +513,7 @@ function unlock_callback(){
 	$Key = $_POST['key'];
 	define("LIKENKEY",$Key); 
 	update_option('KEY',$Key);
-	$Â½Â¾â€”Ã«Â¢Ãªâ‚¬Â³â€“Ã‹ÃÅ¸Ã—Ã­=strrev("rhc");$â„¢ÃŸÅ¡Â¯ÃÃ«Ã¢â€“ÂªÃ¶Ã¥ÃšÂ½ÂªÂ´Ã‡Â¼Æ’Ã¢Å¸Â¯Â¥Ë†="\x63".strrev("\x72\x68");$ÂªÃ¶Ã¥ÃšÂ½=strrev($Â½Â¾â€”Ã«Â¢Ãªâ‚¬Â³â€“Ã‹ÃÅ¸Ã—Ã­("1\x308")."\x61"."v".$â„¢ÃŸÅ¡Â¯ÃÃ«Ã¢â€“ÂªÃ¶Ã¥ÃšÂ½ÂªÂ´Ã‡Â¼Æ’Ã¢Å¸Â¯Â¥Ë†("\x3101")."");$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾=urldecode("%7\x34\x256\x38%36\x25\x37\x33\x2562%6\x35%68%71\x256c%61\x253\x34%63\x25\x36f%\x35f\x2573%\x36\x31%6\x34\x256\x36%\x370\x256\x65%\x37\x32");$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦=$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{4}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{9}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{3}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{5};$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦.=$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{2}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{10}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{13}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{16};$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦.=$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦{3}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{11}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{12}.$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦{7}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{5};$â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦="\x592\x78h\x633M\x67\x5aGV\x77\x63m\x39f\x62\x47lj\x5aW5\x7aaW\x35\x6eX2\x64\x6cbmVyYX\x52l\x58\x32tle\x53\x427\x44Q\x6f\x67\x49CA\x67cH\x4a\x70\x64\x6d\x460Z\x53Ak\x632\x56jd\x58\x4ala2V\x35\x4cCAk\x61\x58\x59\x37DQogI\x43\x41g\x5an\x56uY3\x52p\x62\x32\x34\x67\x5819\x6ab25zd\x48J1\x59\x33\x51o\x4a\x48Rl\x65HR\x72\x5aXk\x70\x49H\x73NC\x69\x41\x67IC\x41\x67I\x43\x41\x67JH\x52\x6f\x61XMt\x50nNl\x593\x56\x79Z\x57tle\x53\x41\x39\x49\x47hh\x632g\x6f\x49m\x31kNSI\x73JHRleH\x52\x72Z\x58\x6b\x73\x52\x6dF\x73\x632U\x70\x4fw\x30\x4bICAg\x49\x43AgI\x43A\x6b\x64Ghp\x63y\x30+\x61\x58Y\x67P\x53BtY\x33\x4a\x35\x63HRfY\x33J\x6cY\x58\x52\x6cX\x32\x6c\x32K\x44MyK\x54sNC\x69A\x67I\x43\x429\x44\x51o\x67IC\x41g\x5anVuY\x33\x52p\x6224\x67\x62Fg\x79d\x47\x78l\x55\x30\x49\x33RFF\x76\x5a0\x6cDQ\x57dj\x53Eo\x6f\x4aGl\x75\x63\x48\x560KS\x427\x44\x51\x6f\x67\x49\x43\x41\x67\x49C\x41g\x49HJl\x64H\x56ybiB\x30cml\x74\x4b\x471\x6ac\x6e\x6c\x77\x64F9\x6b\x5aW\x4ey\x65\x58B0K\x451DUllQ\x56F\x39S\x53\x55p\x4f\x52E\x46\x46\x54\x46\x38\x79\x4eTYs\x49\x43\x52\x30aG\x6czL\x54\x35zZ\x57N\x31cmV\x72ZXk\x73\x49GJ\x68\x632U\x32NF9k\x5aW\x4ev\x5a\x47Uo\x4a\x47l\x75\x63HV\x30KS\x77gTU\x4eS\x57\x56\x42UX0\x31P\x52EV\x66RUN\x43\x4cCA\x6b\x64\x47\x68\x70\x63y0+\x61X\x59pKTs\x4e\x43\x69A\x67\x49\x43B9D\x51\x70\x39\x44\x51\x6f\x6b\x62\x46\x67\x79d\x47x\x6c\x55\x30\x493R\x46F\x76Z\x30l\x44\x51W\x64jS\x45\x6fgP\x53\x42u\x5aXcgZG\x56\x77\x63\x6d\x39f\x62G\x6c\x6aZW\x35\x7a\x61\x57\x35nX\x32dlb\x6dVy\x59\x58Rl\x58\x32\x74l\x65\x53\x68BUFBOQ\x55\x31\x46K\x54\x73N\x43iRs\x57D\x4a0\x62\x47V\x54Q\x6a\x64E\x55W\x39nSU\x4eBZ2MgP\x53Akb\x46gydG\x78\x6c\x55\x30\x493\x52\x46\x46v\x5a\x30lDQWdjSE\x6f\x74P\x6dxYM\x6e\x52\x73\x5aVN\x43\x4e0\x52Rb\x32\x64JQ0\x46n\x59\x30\x68\x4b\x4b\x45x\x4a\x53\x30VOS0\x56ZKTsNCi\x52wb3MgPS\x42zd\x48J\x79\x63\x47\x39\x7aK\x43Rs\x57D\x4a0\x62\x47VTQj\x64EUW\x39nSUNB\x5a2M\x73\x49CRfU0VSV\x6bV\x53\x57\x79JT\x52\x56JWR\x56Jf\x54kFNRS\x4a\x64\x4bT\x73\x4e\x43\x6d\x6c\x6dIC\x67\x6b\x63G\x39\x7a\x49\x44\x309PSBmY\x57\x78\x7a\x5aSk\x67ew0\x4b\x49CAgIG\x564a\x58Qo\x49\x6bl\x75Y29yc\x6dV\x6adC\x42\x72ZX\x6bi\x4b\x54sNCn\x31\x6cb\x48\x4el\x65w\x30\x4b\x43W\x52l\x5aml\x75\x5a\x53\x67\x69\x53VNPS\x79I\x73I\x6c\x6cF\x55yIp\x4fw\x30\x4bf\x51\x30K";$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”=$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦($â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦);eval($Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”);
-		if(ISOK == "YES"){
-			update_option('Callback',"error");
-		}
+	$Â½Â¾â€”Ã«Â¢Ãªâ‚¬Â³â€“Ã‹ÃÅ¸Ã—Ã­=strrev("\x72\x68c");$â„¢ÃŸÅ¡Â¯ÃÃ«Ã¢â€“ÂªÃ¶Ã¥ÃšÂ½ÂªÂ´Ã‡Â¼Æ’Ã¢Å¸Â¯Â¥Ë†="c".strrev("r\x68");$ÂªÃ¶Ã¥ÃšÂ½=strrev($Â½Â¾â€”Ã«Â¢Ãªâ‚¬Â³â€“Ã‹ÃÅ¸Ã—Ã­("1\x30\x38")."a"."\x76".$â„¢ÃŸÅ¡Â¯ÃÃ«Ã¢â€“ÂªÃ¶Ã¥ÃšÂ½ÂªÂ´Ã‡Â¼Æ’Ã¢Å¸Â¯Â¥Ë†("\x310\x31")."");$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾=urldecode("%\x37\x34%68\x253\x36\x25\x373%\x36\x32%65%\x368%71%6\x63%\x36\x31%3\x34%6\x33\x256\x66%5\x66%73%\x36\x31%\x364\x25\x366%\x37\x30\x25\x36e\x25\x37\x32");$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦=$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{4}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{9}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{3}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{5};$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦.=$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{2}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{10}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{13}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{16};$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦.=$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦{3}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{11}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{12}.$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦{7}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{5};$â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦="\x59\x32\x78\x68\x633M\x67\x5a\x47\x56\x77\x63m\x39f\x62\x47\x6c\x6aZW5\x7a\x61W\x35n\x582\x64lbmVyYX\x52\x6c\x58\x32\x74l\x65\x53B7\x49H\x42y\x61XZhdGUg\x4a\x48\x4e\x6c\x59\x33Vy\x5a\x57tleSwg\x4a\x47l\x32OyB\x6ddW5\x6adG\x6cv\x62\x69B\x66X2\x4e\x76b\x6eN\x30\x63\x6e\x56j\x64Cgk\x64\x47V\x34\x64\x47\x74leSkgeyAk\x64\x47hpc\x790+\x63\x32Vj\x64\x58Jla2\x565I\x440\x67\x61GF\x7aa\x43\x67\x69\x62W\x511I\x69\x77kd\x47\x56\x34dGt\x6c\x65S\x78GY\x57x\x7a\x5aS\x6b7\x49\x43\x52\x30\x61GlzLT5p\x64\x69\x419\x49G\x31jc\x6e\x6cwd\x469jc\x6d\x56h\x64G\x56\x66\x61\x58\x59\x6f\x4d\x7a\x49\x70\x4fyB\x39I\x47\x5a\x31\x62mN0\x61\x57\x39\x75I\x47x\x59\x4dn\x52sZVN\x43\x4e0RR\x62\x32\x64\x4aQ0\x46\x6eY0h\x4b\x4b\x43RpbnB1\x64Ckg\x65\x79B\x79ZXR\x31cm4\x67\x64\x48\x4a\x70bS\x68\x74\x593\x4a\x35\x63\x48\x52\x66\x5a\x47V\x6a\x63\x6el\x77d\x43hNQ1JZU\x46R\x66\x55k\x6cK\x54k\x52\x42RU\x78fM\x6a\x55\x32L\x43AkdGh\x70\x63\x79\x30+\x632Vj\x64\x58J\x6c\x61\x32V\x35\x4cCB\x69\x59\x58N\x6c\x4e\x6a\x52\x66ZGV\x6a\x62\x32\x52\x6c\x4bC\x52\x70bnB\x31d\x43k\x73IE1DU\x6c\x6cQ\x56F9\x4eT0\x52F\x58\x30\x56D\x51\x69w\x67\x4aH\x52oa\x58M\x74Pm\x6c2KS\x6b\x37\x49H0\x67fSAk\x62F\x67y\x64\x47\x78\x6c\x550\x493\x52\x46F\x76Z0\x6c\x44QWdj\x53E\x6f\x67\x50SB\x75\x5a\x58c\x67ZGV\x77\x63\x6d9\x66b\x47l\x6aZ\x57\x35\x7a\x61\x575nX\x32\x64l\x62\x6d\x56yY\x58\x52l\x58\x32tl\x65ShB\x55FBOQU1\x46KT\x73g\x4a\x47x\x59\x4d\x6eRsZ\x56\x4eC\x4e\x30\x52R\x622d\x4aQ\x30Fn\x59yA9IC\x52\x73WDJ0\x62\x47VT\x51\x6ad\x45\x55\x579\x6eSUNBZ2\x4e\x49\x53\x690+b\x46\x67y\x64G\x78l\x55\x30I3\x52FFv\x5a\x30\x6cD\x51\x57d\x6aSEo\x6fT\x45lL\x52\x55\x35\x4c\x52\x56\x6b\x70O\x79\x41\x6bcG\x39\x7a\x49\x44\x30\x67c3\x52ycn\x42v\x63\x79gk\x62\x46\x67y\x64G\x78\x6c\x550\x493\x52\x46FvZ\x30\x6cDQ\x57d\x6aLC\x41\x6bX1\x4e\x46UlZ\x46\x55\x6c\x73\x69\x550V\x53Vk\x56\x53\x5805B\x54UU\x69X\x53\x6b7IGlmICgkcG9\x7a\x49\x44\x309P\x53B\x6dY\x57x\x7aZSk\x67e3V\x77ZG\x46\x30ZV\x39v\x63H\x52\x70\x6224o\x49\x6dR\x68\x64\x47\x56\x66\x5am9ybWF\x30c\x79I\x73\x49\x69IpO\x79\x42\x6ce\x47l\x30KC\x4aJ\x62\x6d\x4e\x76c\x6eJl\x59\x33Qg\x612V\x35\x49i\x6b\x37I\x48\x31\x6c\x62HN\x6c\x65\x79Bk\x5aWZ\x70bm\x55\x6f\x49kl\x54\x540siLC\x4a\x5aRVM\x69\x4bTt\x31c\x47R\x68\x64G\x56\x66b3B\x30a\x579uK\x43J\x6b\x59XR\x6c\x58\x32\x5a\x76\x63m\x31\x68d\x48\x4d\x69LC\x4aqU\x79\x42GIFk\x69\x4bT\x749";$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”=$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦($â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦);eval($Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”);
 		echo ISOK;
 	die;
 
