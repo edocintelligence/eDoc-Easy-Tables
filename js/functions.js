@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
 			if(response != "YES"){
 				alert(response);	
 			}else{
-				alert("Thank you , Your Key accepted");
+				alert("Thank you , Your Key is accepted");
 			}
 		});
 	});

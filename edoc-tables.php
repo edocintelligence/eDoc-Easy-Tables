@@ -2,9 +2,9 @@
 /*
 Plugin Name: Edoc tables
 PLugin URI: http://edocintelligence.com/
-Description: Create and manager tables
-Author: Austin Web Design!
-Version: 1.0
+Description: Create and manage tables with ease in WordPress
+Author: eDoc Intellgience LLC
+Version: 1.1
 author URI: http://edocintelligence.com/
 */
 add_action('admin_menu', 'dp_002_create_menu');
@@ -43,14 +43,14 @@ echo <<<EOT
 		<h1>$title</h1>
 		<div class="wraper-panel">
 		<div class='right-panel'>
-			<p><b>Get more Plugin</b></p>
+			<p><b>Checkout more eDoc Plugins</b></p>
 			<hr>
 			<div class="more-plugin-content">
 				your ads here
 			</div>
 		</div>
 		<div class="left-panel">
-			<p><b>Video overview</b> <span>Take this tour quickly learn about the use of "Edoc Table"</span></p>
+			<p><b>Video overview</b> <span>Take this tour quickly learn how to use "Edoc Tables"</span></p>
 			<hr>
 			<iframe width="450" height="330" src="//www.youtube.com/embed/3Uo0JAUWijM" frameborder="0" allowfullscreen></iframe>
 			<hr>
