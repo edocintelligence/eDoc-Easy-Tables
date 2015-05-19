@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Edoc tables
-PLugin URI: http://edocintelligence.com/
+Plugin URI: http://edocintelligence.com/
 Description: Create and manage tables with ease in WordPress
-Author: eDoc Intellgience LLC
+Author: eDoc Intelligence
 Version: 1.1
-author URI: http://edocintelligence.com/
+Author URI: http://edocintelligence.com/
 */
 add_action('admin_menu', 'dp_002_create_menu');
 define('APPNAME', 'EDOCTABLE');
@@ -43,19 +43,19 @@ echo <<<EOT
 		<h1>$title</h1>
 		<div class="wraper-panel">
 		<div class='right-panel'>
-			<p><b>Checkout more eDoc Plugins</b></p>
+			<p><b>Checkout more eDoc WordPress Plugins</b></p>
 			<hr>
 			<div class="more-plugin-content">
-				your ads here
+				Learn More Here
 			</div>
 		</div>
 		<div class="left-panel">
-			<p><b>Video overview</b> <span>Take this tour quickly learn how to use "Edoc Tables"</span></p>
+			<p><b>Video overview</b> <span>Watch this tour quickly learn how to use "Edoc Tables"</span></p>
 			<hr>
 			<iframe width="450" height="330" src="//www.youtube.com/embed/3Uo0JAUWijM" frameborder="0" allowfullscreen></iframe>
 			<hr>
 			<div class='main-panel'>
-			<label>Enter Unlock code</label>
+			<label>Enter Your Unlock code</label>
 			<input type="text" id="keyunlock" value="$demo_time" placeholder="Your Key">
 			<button class='button button-primary' id= "unlocknow" type='submit'>Submit</button>
 			</div>
@@ -297,7 +297,7 @@ function add_table_callback(){
 		$admin_table	= $_POST['table_name'];
 		
 		if($admin_table == ""){
-			echo "<p style='color:Red;font-weight:bold'>Please complete all fields !</p>";
+			echo "<p style='color:Red;font-weight:bold'>Please complete all fields</p>";
 			echo load_panel();
 			die;
 		}
@@ -353,9 +353,9 @@ function add_table_callback(){
 			}				
 
 		}else{
-			echo "<p style='color:Red;font-weight:bold'>Can not insert database !</p>";
+			echo "<p style='color:Red;font-weight:bold'>Cannot insert into database !</p>";
 		}
-		echo "<h2>Admin Other Tables</h2>";
+		echo "<h2>Edit Other Tables</h2>";
 		echo load_panel();
 		die;
 }

@@ -28,7 +28,7 @@ function email_weekly_hourly(){
 				fclose($fp);	
 				$attachments = array( $file );
 				$headers = 'From: Edoc Table <admin>' . "\r\n";
-				wp_mail($email_weekly->value, 'Edoc Weekly Email', 'Hello , this is list users downloaded file in your table!', $headers, $attachments );		
+				wp_mail($email_weekly->value, 'Edoc Tables Weekly Email', 'Hello , this is list users who downloaded files in your tables', $headers, $attachments );		
 
 			}
 		}
