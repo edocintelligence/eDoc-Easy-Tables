@@ -7,6 +7,7 @@ jQuery(document).ready(function($){
 			userClicked : $('#sort_table').attr('current_user'),
 			tableId : $('#sort_table').attr('table_id')
 		}
+		//alert(JSON.stringify(data));
 		$.post(ajaxurls, data, function(response) {
 			console.log(response);
 		});

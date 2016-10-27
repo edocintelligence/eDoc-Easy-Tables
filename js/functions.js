@@ -1,24 +1,8 @@
 jQuery(document).ready(function($){
-	$('.inactive').remove();
+	
 	$('#create_new_column').click(function(){
 		$('.add_panel').before("<div class='each_panel'>"+$('#first_panel').html()+"</div>");
-	});
-	$('#unlocknow').click(function(){
-		var data = {
-			action	: 'unlock',
-			key	: $('#keyunlock').val()
-		};
-		$.post(ajaxurl, data, function(response) {
-			if(response != "YES"){
-				alert(response);	
-			}else{
-				alert("Thank you , Your Key is accepted");
-			}
-		});
-	});
-	$("body").on("click", ".restartload", function(event){
-		window.location.reload()
-		return false;
+		//$('.just_new')
 	});
 	$('.bottom_panel input').click(function(){
 		$('#ajaxloading').show();
@@ -60,7 +44,7 @@ jQuery(document).ready(function($){
 		$.post(ajaxurl, data, function(response) {
 			$('.reponse').html(response);
 			$('#ajaxloading').hide();
-			//window.location.reload();
+			window.localtion.reload();
 		});
 		
 	});
@@ -79,33 +63,33 @@ jQuery(document).ready(function($){
     $('tr td .upload_image_button').click(function() {
  
         //e.preventDefault();
-		$('.insert_here_ok').removeClass('insert_here_ok');
-	 	$(this).prev().addClass('insert_here_ok');
-		
-	        //If the uploader object has already been created, reopen the dialog
-	        if (custom_uploader) {
-	            custom_uploader.open();
-	            return;
-	        }
-	 
-	        //Extend the wp.media object
-	        custom_uploader = wp.media.frames.file_frame = wp.media({
-	            title: 'Choose Image',
-	            button: {
-	                text: 'Choose Image'
-	            },
-	            multiple: false
-	        });
-	 
-	        //When a file is selected, grab the URL and set it as the text field's value
-	        custom_uploader.on('select', function() {
-	            attachment = custom_uploader.state().get('selection').first().toJSON();
-	            $('.insert_here_ok').val(attachment.url);
-	        });
-	 
+	$('.insert_here_ok').removeClass('insert_here_ok');
+ 	$(this).prev().addClass('insert_here_ok');
+	
+        //If the uploader object has already been created, reopen the dialog
+        if (custom_uploader) {
+            custom_uploader.open();
+            return;
+        }
+ 
+        //Extend the wp.media object
+        custom_uploader = wp.media.frames.file_frame = wp.media({
+            title: 'Choose Image',
+            button: {
+                text: 'Choose Image'
+            },
+            multiple: false
+        });
+ 
+        //When a file is selected, grab the URL and set it as the text field's value
+        custom_uploader.on('select', function() {
+            attachment = custom_uploader.state().get('selection').first().toJSON();
+            $('.insert_here_ok').val(attachment.url);
+        });
+ 
         //Open the uploader dialog
         custom_uploader.open();
- 		return false;
+ 	return false;
     });
     $('.date_picker').datepicker({ dateFormat: 'yy-mm-dd' });
 	 

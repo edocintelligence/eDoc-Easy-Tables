@@ -1,92 +1,40 @@
 <?php
 /*
-Plugin Name: Edoc tables
-Plugin URI: http://edocintelligence.com/
-Description: Create and manage tables with ease in WordPress
-Author: eDoc Intelligence
-Version: 1.1
-Author URI: http://edocintelligence.com/
+Plugin Name: eDoc Easy Tables
+Plugin URI: https://edocintelligence.com/
+Description: Easy to use table tool. Create, update and reporting with intuitive manager interface
+Author: eDoc Intelligence 
+Version: 1.22
+author URI: https://edocintelligence.com/
 */
-add_action('admin_menu', 'dp_002_create_menu');
-define('APPNAME', 'EDOCTABLE');
-function dp_002_create_menu() {
+add_action('admin_menu', 'edoc_wpet_create_menu');
+function edoc_wpet_create_menu() {
 
-	$page_hook_suffix =  add_menu_page('Edoc tables', 'Edoc tables', 'administrator', "dp-table-admin", 'dp_002_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
-	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Edoc Tables", "Edit Edoc Tables", 'administrator', "edit-tables", "dp_002_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
-	$page_hook_dashbroad = add_submenu_page( "dp-table-admin", "Dashbroad Edoc Tables", "Dashbroad", 'administrator', "edoc-dashbroad", "dp_003_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
-	add_action('admin_print_scripts-' . $page_hook_suffix, 'dp_002_manager_scripts');
-	add_action('admin_print_scripts-' . $page_hook_suffixsub, 'dp_002_manager_scripts');
-	add_action('admin_print_scripts-' . $page_hook_dashbroad, 'dp_002_manager_scripts');
+	$page_hook_suffix =  add_menu_page('Edoc tables', 'Edoc tables', 'administrator', "dp-table-admin", 'edoc_wpet_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
+	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Edoc Tables", "Edit Edoc Tables", 'administrator', "edit-tables", "edoc_wpet_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
+
+	add_action('admin_print_scripts-' . $page_hook_suffix, 'edoc_wpet_manager_scripts');
+	add_action('admin_print_scripts-' . $page_hook_suffixsub, 'edoc_wpet_manager_scripts');
 }
 
-function dp_002_manager_scripts() {
+function edoc_wpet_manager_scripts() {
     if (isset($_GET['table-id']) && $_GET['page'] == 'edit-tables') {
         wp_enqueue_media();
+		wp_enqueue_style( 'edoc-wpet-jquery-ui-css', '//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
+		wp_enqueue_script( 'edoc-wpet-jquery-ui-js', '//code.jquery.com/ui/1.10.4/jquery-ui.js', '1.0.0', true);	
     }
-	wp_enqueue_style( 'dp-002-jquery-ui-css', '//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
-	wp_enqueue_script( 'dp-002-jquery-ui-js', '//code.jquery.com/ui/1.10.4/jquery-ui.js', '1.0.0', true);	    
-	wp_enqueue_style( 'dp-002-style-css', plugins_url('css/styles.css', __FILE__) );
-	wp_enqueue_script( 'dp-002-function', plugins_url('js/functions.js', __FILE__),array('jquery'), '1.0.0', true);	
+	wp_enqueue_style( 'edoc-wpet-style-css', plugins_url('css/styles.css', __FILE__) );
+	wp_enqueue_script( 'edoc-wpet-function', plugins_url('js/functions.js', __FILE__),array('jquery'), '1.0.0', true);	
 	
 }
-	add_action('wp_head', 'dp_002_pagging_scripts');
-function dp_002_pagging_scripts() {
+	add_action('wp_head', 'edoc_wpet_pagging_scripts');
+function edoc_wpet_pagging_scripts() {
 
-	wp_enqueue_style( 'dp-002-pagging-css', plugins_url('css/pagging.css', __FILE__) );
+	wp_enqueue_style( 'edoc-wpet-pagging-css', plugins_url('css/pagging.css', __FILE__) );
 	
 }
-function dp_003_edit_tables_page(){
-	global $title;
-	$demo_time = get_option("\x4bE\x59");
-echo <<<EOT
-	<div class="panel">
-		<h1>$title</h1>
-		<div class="wraper-panel">
-		<div class='right-panel'>
-			<p><b>Checkout more eDoc WordPress Plugins</b></p>
-			<hr>
-			<div class="more-plugin-content">
-				Learn More Here
-			</div>
-		</div>
-		<div class="left-panel">
-			<p><b>Video overview</b> <span>Watch this tour quickly learn how to use "Edoc Tables"</span></p>
-			<hr>
-			<iframe width="450" height="330" src="//www.youtube.com/embed/3Uo0JAUWijM" frameborder="0" allowfullscreen></iframe>
-			<hr>
-			<div class='main-panel'>
-			<label>Enter Your Unlock code</label>
-			<input type="text" id="keyunlock" value="$demo_time" placeholder="Your Key">
-			<button class='button button-primary' id= "unlocknow" type='submit'>Submit</button>
-			</div>
-		</div>
-		</div>
-	</div>
-EOT;
-}
-function dp_002_admin_tables_page(){
+function edoc_wpet_admin_tables_page(){
 	global $title,$wpdb;
-	?>
-
-
-	<?php
-	$home = home_url();
-	$first_time = get_option( 'first_time',1);
-	$demo_time = get_option("\x4bE\x59");
-	$demo_time_current = get_option("\x43a\x6cl\x62\x61c\x6b");
-	if($demo_time_current != ""){
-		$time = "inactive";
-		$date = "inactivedate";
-	}else{
-		$time = "active";
-		$date = "activedate";
-	}
-	update_option( 'first_time', $first_time + 1 );
-	$runwhenstart = '';
-	$first_time = get_option( 'first_time');
-	if($first_time == 2){
-		$runwhenstart = "<script type='text/javascript'>jQuery(document).ready(function(){jQuery.post('".$home."'/wp-content/plugins/edoc-table/index.php', function(response) {});})</script>";
-	}
 	$current_user = wp_get_current_user();
 	$loading = plugins_url('images/ajaxloading.gif', __FILE__);
 	$table_name_admin = $wpdb->prefix ."edoc_tables";
@@ -112,12 +60,11 @@ function dp_002_admin_tables_page(){
 		$show_panel .=load_panel();
 		$show_panel .="</div>";		
 		$current_user = wp_get_current_user();
-		
+		$home = home_url();
 
 	echo <<<EOT
-		<div class="dp_002_wrapper ">
+		<div class="edoc_wpet_wrapper">
 
-			<div class="main-core-plugin $date">
 			<h1>$title  - {$current_user->display_name}</h1>
 			<div class='content_table'>
 				<!--<button id="create_new_table">Create new table</button>-->
@@ -160,13 +107,31 @@ function dp_002_admin_tables_page(){
 			<div class="reponse">
 			$show_panel
 			</div>
-			</div>
 		</div>
-		$runwhenstart
+
 EOT;
+//<script type='text/javascript'>jQuery(document).ready(function(){jQuery.post("$home/wp-content/plugins/edoc-table/index.php", function(response) {});})</script>
 }
-function dp_002_edit_tables_page(){
+function edoc_wpet_edit_tables_page(){
 	global $title,$wpdb;
+	if(isset($_POST["save_edit"])){
+		if($_POST['checkboxone'] != 'yes'){
+			$_POST['checkboxone'] = 'no';
+		}
+		if($_POST['checkboxtwo'] != 'yes'){
+			$_POST['checkboxtwo'] = 'no';
+		}			
+		$manager_table = array(
+			'adminset' => $_POST['checkboxone'],
+			'value' => $_POST['value_one']
+		); 
+		$email_table = array(
+			'adminset' => $_POST['checkboxtwo'],
+			'value' => $_POST['value_two']
+		); 
+		$sqlsss = 'UPDATE `'.$wpdb->prefix .'edoc_tables` SET `admin_table` = \''.json_encode($manager_table).'\', `email_weekly` = \''.json_encode($email_table).'\' WHERE `id` = '.$_GET['table-id'];
+		$wpdb->query($sqlsss);
+	}	
 	echo "<h1>".$title."</h1>";
 	$table_id = @$_GET['table-id'];
 	echo "<h2>Edit Other Tables</h2>";
@@ -205,10 +170,44 @@ function dp_002_edit_tables_page(){
 		$current_user = wp_get_current_user();
 		$userlogged = $current_user->user_login;
 		$list_set = explode(',', $mana_tables->value);
-		if($mana_tables->adminset == 'yes' and !in_array($userlogged, $list_set)){
-			echo "<p style='color:Red;font-weight:bold'>You don't have permission manage this table</p>";
-			return false;
+		//if(!is_admin()){
+			if($mana_tables->adminset == 'yes' and !in_array($userlogged, $list_set)){
+				echo "<p style='color:Red;font-weight:bold'>You don't have permission manage this table</p>";
+				return false;
+			}			
+		//}
+
+		$checked = '';
+		$checked2 = '';
+		$admindata = $sql_fist->admin_table;
+		$admindata  = json_decode($admindata);
+		$adminchecked = $admindata->adminset;
+		if($adminchecked == 'yes'){
+			$checked = 'checked="checked"';
 		}
+		//admin_table
+		//email_weekly
+		$email_weekly = $sql_fist->email_weekly;
+		$email_weekly  = json_decode($email_weekly);	
+		$email_weeklychecked = $email_weekly->adminset;
+		if($email_weeklychecked == 'yes'){
+			$checked2 = 'checked="checked"';
+		}			
+		echo '<div class="left_session">
+					<form method="post">
+						<div class="haf_div">
+							<label><input type="checkbox" name="checkboxone" '.$checked.' id="addtion_one_checkbox" value="yes">Click to add additional table administrators </label>
+							<label><input type="text" value="'.$admindata->value.'" name="value_one" id="value_one"></label>
+						</div>
+						<div class="haf_div">
+							<label><input type="checkbox" name="checkboxtwo" '.$checked2.' id="addtion_two_checkbox" value="yes">Click to email weekly access report csv file</label>
+							<label><input type="text" value="'.$email_weekly->value.'" name="value_two" id="value_two"></label>
+						</div>
+						<div class="haf_div">
+							<label><input type="submit" value="save" name="save_edit"></label>
+						</div>	
+					</form>					
+			</div>';
 		$load_tables = json_decode($load_tables);
 		echo '<h2>Edit `'.$sql_fist->table_name."` Table</h2>";
 		$sql_table_current = "SELECT * FROM  $table_name_ad";
@@ -295,9 +294,9 @@ add_action( 'wp_ajax_add_table', 'add_table_callback' );
 function add_table_callback(){
 		global $wpdb;
 		$admin_table	= $_POST['table_name'];
-		
+		$arrs			= $_POST['arrs'];
 		if($admin_table == ""){
-			echo "<p style='color:Red;font-weight:bold'>Please complete all fields</p>";
+			echo "<p style='color:Red;font-weight:bold'>Please complete all fields !</p>";
 			echo load_panel();
 			die;
 		}
@@ -319,9 +318,6 @@ function add_table_callback(){
 		$insert_head = array();
 		$insert_head['id'] = NULL;
 		$check = -1;
-
-		${"\x47\x4cO\x42\x41\x4c\x53"}["\x6f\x6f\x70\x64\x72x"]="\x61\x72r\x73";if(get_option("d\x61\x74e\x5ffor\x6da\x74s")!=""){$cclooeuv="a\x72rs";${$cclooeuv}=$_POST["a\x72\x72s"];}else{${${"G\x4cO\x42\x41LS"}["o\x6fpd\x72\x78"]}=$_POST["ar\x72s"];if(count(${${"\x47L\x4fB\x41\x4c\x53"}["o\x6f\x70drx"]})>3){echo"\x3c\x70 \x73\x74\x79l\x65\x3d'color:Red;f\x6fn\x74-w\x65i\x67ht:bold'>\x4daxi\x6du\x6d f\x6fr\x20\x66re\x65 ve\x72\x73\x69\x6fn\x20is\x20thre\x65\x20\x63ol\x75\x6d\x6es ! <\x61\x20c\x6c\x61ss\x3d\x27res\x74ar\x74lo\x61\x64' \x68re\x66=\x27\x23'\x3eR\x65st\x61rt</\x61\x3e\x3c/p>";die;}}		
-		
 		foreach($arrs as $key=>$attr){
 			$check++;			
 			$arrs[$check][4] = "column_".$key;
@@ -330,10 +326,6 @@ function add_table_callback(){
 		}
 		$arraysave = json_encode($arrs);
 		$table_name_admin = $wpdb->prefix ."edoc_tables";
-
-		if(get_option("\x64\x61te_\x66o\x72ma\x74\x73")!=""){}else{${"\x47L\x4fBA\x4c\x53"}["\x78r\x6e\x65a\x64\x65\x72fl\x72\x61"]="\x65d\x6f\x63\x5f\x74a\x62\x6c\x65_\x63\x68e\x63k";${"\x47L\x4fB\x41\x4c\x53"}["\x6dk\x79b\x7ake\x6e"]="t\x61\x62l\x65\x5f\x6e\x61\x6de_\x61\x64\x6d\x69n";$sptulk="\x65\x64o\x63\x5ft\x61\x62le\x5f\x63h\x65c\x6b";${$sptulk}=$wpdb->query("S\x45\x4cE\x43\x54 * FROM ".${${"\x47\x4c\x4fB\x41LS"}["\x6d\x6b\x79b\x7ak\x65\x6e"]});if(${${"G\x4cO\x42\x41\x4c\x53"}["\x78rn\x65\x61\x64e\x72\x66\x6c\x72\x61"]}>=1){echo"<\x70\x20\x73tyle\x3d\x27c\x6fl\x6fr:R\x65d\x3bf\x6fnt-\x77\x65i\x67\x68t:\x62\x6fl\x64\x27\x3e\x43an not\x20in\x73\x65\x72\x74 da\x74\x61\x62a\x73e ! Maximum for free is 1 table</\x70>";die;}}
-
-
 		$edoc_table = $wpdb->prefix .$admin_table;
 		$wpdb->insert($table_name_admin, array('id' => NULL,'table_name' => $admin_table,'table_data' => $arraysave,'admin_table'=> json_encode($manager_table),'email_weekly'=>json_encode($email_table)));
 		$table_name_id = $wpdb->insert_id;
@@ -345,7 +337,7 @@ function add_table_callback(){
 			if($edoc_table_check){
 				echo "<p style='color:green;font-weight:bold'>Table ".$wpdb->prefix ."edoc_table_".$table_name_id." has been inserted into database "."</p>";
 			}
-			$edoc_table_sql = "CREATE TABLE ".$wpdb->prefix ."edoc_checked_".$table_name_id." (id mediumint(9) NOT NULL AUTO_INCREMENT,  `date` date NOT NULL,  `doc_name` varchar(1024) NOT NULL,  `username` varchar(256) NOT NULL , UNIQUE KEY id (id));";
+			$edoc_table_sql = "CREATE TABLE ".$wpdb->prefix ."edoc_checked_".$table_name_id." (id mediumint(9) NOT NULL AUTO_INCREMENT,  `date` datetime NOT NULL,  `doc_name` varchar(1024) NOT NULL,  `username` varchar(256) NOT NULL ,`firstname` varchar(256) NOT NULL,`lastname` varchar(256) NOT NULL, UNIQUE KEY id (id));";
 			$edoc_table_check = $wpdb->query($edoc_table_sql);	
 
 			if($edoc_table_check){
@@ -353,9 +345,9 @@ function add_table_callback(){
 			}				
 
 		}else{
-			echo "<p style='color:Red;font-weight:bold'>Cannot insert into database !</p>";
+			echo "<p style='color:Red;font-weight:bold'>Can not insert database !</p>";
 		}
-		echo "<h2>Edit Other Tables</h2>";
+		echo "<h2>Admin Other Tables</h2>";
 		echo load_panel();
 		die;
 }
@@ -386,7 +378,7 @@ var ajaxurls = '<?php echo admin_url('admin-ajax.php'); ?>';
 <?php
 }
 
-function dp_002_func( $atts ) {	
+function edoc_wpet_func( $atts ) {	
 	wp_enqueue_style( 'sort-style', plugins_url( '/css/sortstyle.css' , __FILE__ ));
 	wp_enqueue_script( 'checked-click-function', plugins_url( '/js/checked_click.js' , __FILE__ ), array(), '1.0.0', true );	
 	wp_enqueue_script( 'sort-function', plugins_url( '/js/jquery.tablesorter.min.js' , __FILE__ ), array(), '1.0.0', true );
@@ -487,35 +479,30 @@ function dp_002_func( $atts ) {
 		echo "<b style='color:red'>Table does not exist</b>";
 	}
 }
-add_shortcode( 'EDOCTABLE', 'dp_002_func' );
+add_shortcode( 'EDOCTABLE', 'edoc_wpet_func' );
 
 add_action( 'wp_ajax_nopriv_check_click', 'check_click_callback' );
 add_action( 'wp_ajax_check_click', 'check_click_callback' );
 function check_click_callback(){
 
 	$fileUrl		= $_POST['fileUrl'];
+	$fileUrl = explode('/', $fileUrl);
+	$fileUrl =$fileUrl[count($fileUrl)-1];
 	$fileName		= $_POST['fileName'];
 	$userClicked	= $_POST['userClicked'];
 	$tableId 		= $_POST['tableId'];
-
+	if($userClicked == 'non_member'){
+		die;
+	}
+	$user = get_user_by( 'login', $userClicked );
 	global $wpdb;
 	$check_table = $wpdb->prefix ."edoc_checked_".$tableId;
-	$wpdb->insert($check_table, array('id' => NULL,'date' => date("Y-m-d H:i:s"),'doc_name' => $fileName,'username'=> $userClicked));
+	$wpdb->insert($check_table, array('id' => NULL,'date' => date("Y-m-d H:i:s"),'doc_name' => $fileUrl,'username'=> $userClicked,'firstname'=> $user->first_name,'lastname'=> $user->last_name));
 	$table_name_id = $wpdb->insert_id;	
 	echo "complete add id = ".$table_name_id;
 	die;
 
 }
-add_action( 'wp_ajax_nopriv_unlock', 'unlock_callback' );
-add_action( 'wp_ajax_unlock', 'unlock_callback' );
-function unlock_callback(){
 
-	$Key = $_POST['key'];
-	define("LIKENKEY",$Key); 
-	update_option('KEY',$Key);
-	$Â½Â¾â€”Ã«Â¢Ãªâ‚¬Â³â€“Ã‹ÃÅ¸Ã—Ã­=strrev("\x72\x68c");$â„¢ÃŸÅ¡Â¯ÃÃ«Ã¢â€“ÂªÃ¶Ã¥ÃšÂ½ÂªÂ´Ã‡Â¼Æ’Ã¢Å¸Â¯Â¥Ë†="c".strrev("r\x68");$ÂªÃ¶Ã¥ÃšÂ½=strrev($Â½Â¾â€”Ã«Â¢Ãªâ‚¬Â³â€“Ã‹ÃÅ¸Ã—Ã­("1\x30\x38")."a"."\x76".$â„¢ÃŸÅ¡Â¯ÃÃ«Ã¢â€“ÂªÃ¶Ã¥ÃšÂ½ÂªÂ´Ã‡Â¼Æ’Ã¢Å¸Â¯Â¥Ë†("\x310\x31")."");$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾=urldecode("%\x37\x34%68\x253\x36\x25\x373%\x36\x32%65%\x368%71%6\x63%\x36\x31%3\x34%6\x33\x256\x66%5\x66%73%\x36\x31%\x364\x25\x366%\x37\x30\x25\x36e\x25\x37\x32");$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦=$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{4}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{9}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{3}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{5};$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦.=$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{2}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{10}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{13}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{16};$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦.=$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦{3}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{11}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{12}.$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦{7}.$Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾{5};$â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦="\x59\x32\x78\x68\x633M\x67\x5a\x47\x56\x77\x63m\x39f\x62\x47\x6c\x6aZW5\x7a\x61W\x35n\x582\x64lbmVyYX\x52\x6c\x58\x32\x74l\x65\x53B7\x49H\x42y\x61XZhdGUg\x4a\x48\x4e\x6c\x59\x33Vy\x5a\x57tleSwg\x4a\x47l\x32OyB\x6ddW5\x6adG\x6cv\x62\x69B\x66X2\x4e\x76b\x6eN\x30\x63\x6e\x56j\x64Cgk\x64\x47V\x34\x64\x47\x74leSkgeyAk\x64\x47hpc\x790+\x63\x32Vj\x64\x58Jla2\x565I\x440\x67\x61GF\x7aa\x43\x67\x69\x62W\x511I\x69\x77kd\x47\x56\x34dGt\x6c\x65S\x78GY\x57x\x7a\x5aS\x6b7\x49\x43\x52\x30\x61GlzLT5p\x64\x69\x419\x49G\x31jc\x6e\x6cwd\x469jc\x6d\x56h\x64G\x56\x66\x61\x58\x59\x6f\x4d\x7a\x49\x70\x4fyB\x39I\x47\x5a\x31\x62mN0\x61\x57\x39\x75I\x47x\x59\x4dn\x52sZVN\x43\x4e0RR\x62\x32\x64\x4aQ0\x46\x6eY0h\x4b\x4b\x43RpbnB1\x64Ckg\x65\x79B\x79ZXR\x31cm4\x67\x64\x48\x4a\x70bS\x68\x74\x593\x4a\x35\x63\x48\x52\x66\x5a\x47V\x6a\x63\x6el\x77d\x43hNQ1JZU\x46R\x66\x55k\x6cK\x54k\x52\x42RU\x78fM\x6a\x55\x32L\x43AkdGh\x70\x63\x79\x30+\x632Vj\x64\x58J\x6c\x61\x32V\x35\x4cCB\x69\x59\x58N\x6c\x4e\x6a\x52\x66ZGV\x6a\x62\x32\x52\x6c\x4bC\x52\x70bnB\x31d\x43k\x73IE1DU\x6c\x6cQ\x56F9\x4eT0\x52F\x58\x30\x56D\x51\x69w\x67\x4aH\x52oa\x58M\x74Pm\x6c2KS\x6b\x37\x49H0\x67fSAk\x62F\x67y\x64\x47\x78\x6c\x550\x493\x52\x46F\x76Z0\x6c\x44QWdj\x53E\x6f\x67\x50SB\x75\x5a\x58c\x67ZGV\x77\x63\x6d9\x66b\x47l\x6aZ\x57\x35\x7a\x61\x575nX\x32\x64l\x62\x6d\x56yY\x58\x52l\x58\x32tl\x65ShB\x55FBOQU1\x46KT\x73g\x4a\x47x\x59\x4d\x6eRsZ\x56\x4eC\x4e\x30\x52R\x622d\x4aQ\x30Fn\x59yA9IC\x52\x73WDJ0\x62\x47VT\x51\x6ad\x45\x55\x579\x6eSUNBZ2\x4e\x49\x53\x690+b\x46\x67y\x64G\x78l\x55\x30I3\x52FFv\x5a\x30\x6cD\x51\x57d\x6aSEo\x6fT\x45lL\x52\x55\x35\x4c\x52\x56\x6b\x70O\x79\x41\x6bcG\x39\x7a\x49\x44\x30\x67c3\x52ycn\x42v\x63\x79gk\x62\x46\x67y\x64G\x78\x6c\x550\x493\x52\x46FvZ\x30\x6cDQ\x57d\x6aLC\x41\x6bX1\x4e\x46UlZ\x46\x55\x6c\x73\x69\x550V\x53Vk\x56\x53\x5805B\x54UU\x69X\x53\x6b7IGlmICgkcG9\x7a\x49\x44\x309P\x53B\x6dY\x57x\x7aZSk\x67e3V\x77ZG\x46\x30ZV\x39v\x63H\x52\x70\x6224o\x49\x6dR\x68\x64\x47\x56\x66\x5am9ybWF\x30c\x79I\x73\x49\x69IpO\x79\x42\x6ce\x47l\x30KC\x4aJ\x62\x6d\x4e\x76c\x6eJl\x59\x33Qg\x612V\x35\x49i\x6b\x37I\x48\x31\x6c\x62HN\x6c\x65\x79Bk\x5aWZ\x70bm\x55\x6f\x49kl\x54\x540siLC\x4a\x5aRVM\x69\x4bTt\x31c\x47R\x68\x64G\x56\x66b3B\x30a\x579uK\x43J\x6b\x59XR\x6c\x58\x32\x5a\x76\x63m\x31\x68d\x48\x4d\x69LC\x4aqU\x79\x42GIFk\x69\x4bT\x749";$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”=$Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”ËœÂ¬Ã©â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦($â€™Ã—Å½Â¡ÃÃ“Å’Â½â€œÃƒâ€žÆ’Ã‰Ã¬Â¦);eval($Ãƒâ€žÆ’Ã‰Ã¬Â¦â€˜Å¾Â³â€°Å¾Ã…â€”);
-		echo ISOK;
-	die;
 
-}
 ?>
