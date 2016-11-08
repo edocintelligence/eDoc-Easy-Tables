@@ -43,8 +43,16 @@
 }
 #ajaxloading,.ajaxloading{
 	position:relative;
-	top:7px;
+	top:3px;
+	left:-30px;
 	display:none;
+}
+#create_table_layout{
+	-webkit-transition: padding .5s; /* Safari */
+    transition: padding .5s;
+}
+.posting{
+	padding-right:45px !important;
 }
 #add_new{
 	display:none;
@@ -124,4 +132,9 @@
 	padding:20px 0px;
 	margin: 20px 0px;
 	width:100%;
+}
+.edoc-tables_page_edit-tables #message,.toplevel_page_dp-table-admin  #message{
+    margin: 30px 0px 0px 0px !important;
+    width: 645px !important;	
+    display: inline-block;
 }

@@ -6,12 +6,13 @@ Description: Easy to use table tool. Create, update and reporting with intuitive
 Author: eDoc Intelligence 
 Version: 1.22
 author URI: https://edocintelligence.com/
-*/
+*/ 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action('admin_menu', 'edoc_wpet_create_menu');
 function edoc_wpet_create_menu() {
 
-	$page_hook_suffix =  add_menu_page('Edoc tables', 'Edoc tables', 'administrator', "dp-table-admin", 'edoc_wpet_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
-	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Edoc Tables", "Edit Edoc Tables", 'administrator', "edit-tables", "edoc_wpet_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
+	$page_hook_suffix =  add_menu_page('Edoc tables', 'Edoc tables', 'read', "dp-table-admin", 'edoc_wpet_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
+	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Edoc Tables", "Edit Edoc Tables", 'read', "edit-tables", "edoc_wpet_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
 
 	add_action('admin_print_scripts-' . $page_hook_suffix, 'edoc_wpet_manager_scripts');
 	add_action('admin_print_scripts-' . $page_hook_suffixsub, 'edoc_wpet_manager_scripts');
@@ -20,8 +21,9 @@ function edoc_wpet_create_menu() {
 function edoc_wpet_manager_scripts() {
     if (isset($_GET['table-id']) && $_GET['page'] == 'edit-tables') {
         wp_enqueue_media();
-		wp_enqueue_style( 'edoc-wpet-jquery-ui-css', '//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' );
-		wp_enqueue_script( 'edoc-wpet-jquery-ui-js', '//code.jquery.com/ui/1.10.4/jquery-ui.js', '1.0.0', true);	
+		wp_enqueue_script('jquery-ui-core');;	
+		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_style('jquery-ui-style', plugins_url('css/jquery-ui.min.css', __FILE__));
     }
 	wp_enqueue_style( 'edoc-wpet-style-css', plugins_url('css/styles.css', __FILE__) );
 	wp_enqueue_script( 'edoc-wpet-function', plugins_url('js/functions.js', __FILE__),array('jquery'), '1.0.0', true);	
@@ -45,23 +47,23 @@ function edoc_wpet_admin_tables_page(){
 	$sql_load_table = $wpdb->get_results($sql_load_table);
 	$actions = @$_GET['actions'];
 	$notification = '';
-	if(isset($actions) and $actions="delete"){
+
+	if(isset($actions) && $actions="delete" &&  wp_verify_nonce($_GET['delete'], 'doing_delete')){
 		$DELETE = "DELETE FROM $table_name_admin WHERE $table_name_admin.`id` = $table_id";
 		$CHECK = $wpdb->query($DELETE);
 		IF($CHECK){
-			$notification =  "Table id ".$table_id." have been deleted !";
+			$notification =  "Table id ".$table_id." and data for this table have been deleted !";
 			$DELETE = "DROP TABLE $table_name_edit";
 			$CHECK = $wpdb->query($DELETE);
+			$notification =  '<div id="message" class="updated notice is-dismissible"><p>'.$notification.'</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 		}	
 	}
-		$show_panel = "<div class='table_show'>";
-		$show_panel .="<h2>Admin Other Tabe</h2>";
 
-		$show_panel .=load_panel();
-		$show_panel .="</div>";		
-		$current_user = wp_get_current_user();
-		$home = home_url();
+	$show_panel  = edoc_wpet_load_panel();
+	$home = home_url();
+	$current_user_roles =$current_user->roles;
 
+	if(in_array('administrator', $current_user_roles)){	
 	echo <<<EOT
 		<div class="edoc_wpet_wrapper">
 
@@ -77,7 +79,7 @@ function edoc_wpet_admin_tables_page(){
 						</div>
 						<div class='haf_div'>
 							<label><input type='checkbox' name='checkboxtwo' id='addtion_two_checkbox' value='yes'>Click to email weekly access report csv file</label>
-							<label><input type='text' value='' name='value_two' id='value_two'></label>
+							<label><input type='email' value='' name='value_two' id='value_two'></label>
 						</div>
 					</div>
 					<div class="top_panel">
@@ -85,7 +87,7 @@ function edoc_wpet_admin_tables_page(){
 					</div>
 					<div class="main_panel">
 						<div class="each_panel" id="first_panel">
-							<p><input type="text" name="column_name" class='column_name' value="" placeholder="Column name"/></p>
+							<p><input type="text" name="column_name" required class='column_name' value="" placeholder="Column name"/></p>
 							
 							<p>Type : <select name="column_type" class="column_type">
 								<option value="text">Text input</option>
@@ -103,60 +105,84 @@ function edoc_wpet_admin_tables_page(){
 					</div>				
 				</div>
 			</div>
-			<b style="color:red">$notification</b>
+			$notification
 			<div class="reponse">
 			$show_panel
 			</div>
 		</div>
 
 EOT;
-//<script type='text/javascript'>jQuery(document).ready(function(){jQuery.post("$home/wp-content/plugins/edoc-table/index.php", function(response) {});})</script>
+}else{
+		echo '<div class="edoc_wpet_wrapper">';
+				echo "<p>You do not have sufficient permissions to access this page !</p>";
+		echo '</div>';	
+}
 }
 function edoc_wpet_edit_tables_page(){
-	global $title,$wpdb;
-	if(isset($_POST["save_edit"])){
-		if($_POST['checkboxone'] != 'yes'){
-			$_POST['checkboxone'] = 'no';
-		}
-		if($_POST['checkboxtwo'] != 'yes'){
-			$_POST['checkboxtwo'] = 'no';
-		}			
-		$manager_table = array(
-			'adminset' => $_POST['checkboxone'],
-			'value' => $_POST['value_one']
-		); 
-		$email_table = array(
-			'adminset' => $_POST['checkboxtwo'],
-			'value' => $_POST['value_two']
-		); 
-		$sqlsss = 'UPDATE `'.$wpdb->prefix .'edoc_tables` SET `admin_table` = \''.json_encode($manager_table).'\', `email_weekly` = \''.json_encode($email_table).'\' WHERE `id` = '.$_GET['table-id'];
-		$wpdb->query($sqlsss);
-	}	
+	global $title,$wpdb;		
 	echo "<h1>".$title."</h1>";
+	if( edoc_wpet_load_panel() != ''){
+		echo edoc_wpet_load_panel();
+	}else{
+		echo '<div class="edoc_wpet_wrapper">';
+				echo '<p>Data seems empty, please add the first data</p>';
+		echo '</div>';
+	}
 	$table_id = @$_GET['table-id'];
-	echo "<h2>Edit Other Tables</h2>";
-	echo load_panel();	
 	$table_name_edit = $wpdb->prefix ."edoc_table_".$table_id;
-	if(isset($_GET['row_id'])){
+	if(isset($_GET['row_id']) && wp_verify_nonce($_GET['delete'], 'doing_delete')){
 		$ROW_ID = $_GET['row_id'];
 		$DELETE = "DELETE FROM $table_name_edit WHERE $table_name_edit.`id` = $ROW_ID";
 		$CHECK = $wpdb->query($DELETE);
 		IF($CHECK){
-			ECHO "Row id ".$ROW_ID." have been deleted !";
+			echo '<div id="message" class="updated notice is-dismissible"><p>Row id '.$ROW_ID.' have been deleted !</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 		}
-	}	
+	}
+	
+	if(isset($_POST["save_edit"]) &&  isset( $_POST['edoc_wpet_save_edit'] )  && wp_verify_nonce( $_POST['edoc_wpet_save_edit'], 'edoc_wpet_save_edit_action' ) ){
+		$checkboxone = sanitize_text_field( $_POST['checkboxone'] );
+		$checkboxtwo = sanitize_text_field( $_POST['checkboxtwo'] );
+		if($checkboxone != 'yes'){
+			$checkboxone = 'no';
+		}
+		if($checkboxtwo != 'yes'){
+			$checkboxtwo = 'no';
+		}			
+		$manager_table = array(
+			'adminset' => $checkboxone,
+			'value' => sanitize_text_field($_POST['value_one'])
+		); 
+		$email_table = array(
+			'adminset' => $checkboxtwo,
+			'value' => sanitize_email($_POST['value_two'])
+		); 
+		$wpdb->query( $wpdb->prepare( 
+			"
+				UPDATE ".$wpdb->prefix."edoc_tables
+				SET `admin_table` = %s ,`email_weekly` = %s 
+				WHERE  `id` = %d
+			", 
+			json_encode($manager_table), 
+			json_encode($email_table) ,
+			(int)$_GET['table-id'] 
+		) );
+		$wpdb->show_errors();
+		
+	}
 	$loading = plugins_url('images/ajaxloading.gif', __FILE__);
-	if(isset($_POST['add_row'])){
+	if(isset($_POST['add_row']) && isset( $_POST['edoc_wpet_save_edit'] )  && wp_verify_nonce( $_POST['edoc_wpet_save_edit'], 'edoc_wpet_save_edit_action' )){
 		$data_row = $_POST;
+		array_pop($data_row);
+		array_pop($data_row);
 		array_pop($data_row);
 		$data_row['id'] = null;		
 		$wpdb->insert($table_name_edit, $data_row);
 		$table_insert_id = $wpdb->insert_id;
 		if($table_insert_id){
-			echo "Add complete !";
+			echo '<div id="message" class="updated notice is-dismissible"><p>Row id '.$table_insert_id.' added !</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 		}
 	}
-	if(isset($table_id) and $table_id != ""){
+	if(isset($table_id) and $table_id != "") {
 		$table_name_admin = $wpdb->prefix ."edoc_tables";
 		$table_name_ad = $wpdb->prefix ."edoc_table_".$table_id;
 		
@@ -169,13 +195,14 @@ function edoc_wpet_edit_tables_page(){
 		$mana_tables = json_decode($mana_tables);
 		$current_user = wp_get_current_user();
 		$userlogged = $current_user->user_login;
+		$userroles = $current_user->roles;
 		$list_set = explode(',', $mana_tables->value);
-		//if(!is_admin()){
-			if($mana_tables->adminset == 'yes' and !in_array($userlogged, $list_set)){
-				echo "<p style='color:Red;font-weight:bold'>You don't have permission manage this table</p>";
-				return false;
-			}			
-		//}
+
+		if($mana_tables->adminset == 'yes' && !in_array($userlogged, $list_set) && !in_array('administrator', $userroles)){
+			echo "<p style='color:Red;font-weight:bold'>You don't have permission manage this table</p>";
+			return false;
+		}			
+
 
 		$checked = '';
 		$checked2 = '';
@@ -185,29 +212,35 @@ function edoc_wpet_edit_tables_page(){
 		if($adminchecked == 'yes'){
 			$checked = 'checked="checked"';
 		}
-		//admin_table
-		//email_weekly
 		$email_weekly = $sql_fist->email_weekly;
 		$email_weekly  = json_decode($email_weekly);	
 		$email_weeklychecked = $email_weekly->adminset;
 		if($email_weeklychecked == 'yes'){
 			$checked2 = 'checked="checked"';
-		}			
+		}	
+		$current_user = wp_get_current_user();
+		$current_user_roles =$current_user->roles;
 		echo '<div class="left_session">
-					<form method="post">
-						<div class="haf_div">
-							<label><input type="checkbox" name="checkboxone" '.$checked.' id="addtion_one_checkbox" value="yes">Click to add additional table administrators </label>
-							<label><input type="text" value="'.$admindata->value.'" name="value_one" id="value_one"></label>
-						</div>
-						<div class="haf_div">
-							<label><input type="checkbox" name="checkboxtwo" '.$checked2.' id="addtion_two_checkbox" value="yes">Click to email weekly access report csv file</label>
-							<label><input type="text" value="'.$email_weekly->value.'" name="value_two" id="value_two"></label>
-						</div>
-						<div class="haf_div">
-							<label><input type="submit" value="save" name="save_edit"></label>
-						</div>	
-					</form>					
-			</div>';
+				<form method="post">';
+		if(in_array('administrator', $current_user_roles)){
+
+			echo	'<div class="haf_div">
+						<label><input type="checkbox" name="checkboxone" '.$checked.' id="addtion_one_checkbox" value="yes">Click to add additional table administrators </label>
+						<label><input type="text" value="'.$admindata->value.'" name="value_one" id="value_one"></label>
+					</div>';
+		}
+		echo		'<div class="haf_div">
+						<label><input type="checkbox" name="checkboxtwo" '.$checked2.' id="addtion_two_checkbox" value="yes">Click to email weekly access report csv file</label>
+						<label><input type="email" value="'.$email_weekly->value.'" name="value_two" id="value_two"></label>
+					</div>
+					<div class="haf_div">
+					'.wp_nonce_field( 'edoc_wpet_save_edit_action', 'edoc_wpet_save_edit' ).'
+						<label><input type="submit" value="save" name="save_edit"></label>
+					</div>
+					
+				</form>					
+		</div>';
+		
 		$load_tables = json_decode($load_tables);
 		echo '<h2>Edit `'.$sql_fist->table_name."` Table</h2>";
 		$sql_table_current = "SELECT * FROM  $table_name_ad";
@@ -238,7 +271,9 @@ function edoc_wpet_edit_tables_page(){
 			}
 			echo "<td>".$add."</td>";	
 		}	
-		echo "<td><input type='submit' name='add_row' class='button button-primary' value='Save' id='submit_add_row' />
+		echo "<td>";
+		wp_nonce_field( 'edoc_wpet_save_edit_action', 'edoc_wpet_save_edit' );
+		echo "<input type='submit' name='add_row' class='button button-primary' value='Save' id='submit_add_row' />
 		</td></tr>";
 	
 		$sql = "SELECT * FROM  $table_name_edit";
@@ -254,10 +289,12 @@ function edoc_wpet_edit_tables_page(){
 				  }
 				else
 				  {
-					echo "<td><a target='_blank' href='".$table_content->$colums."'>click here</a></td>";
+
+					echo "<td><a target='_blank' href='".wp_nonce_url($table_content->$colums,'doing_show','show_table')."'>click here</a></td>";
 				  }
 			}
-			echo "<td><a href='".home_url()."/wp-admin/admin.php?page=edit-tables&table-id=".$table_id."&row_id=".$table_content->id."'>delete</a></td>";
+			$delete_link = home_url()."/wp-admin/admin.php?page=edit-tables&table-id=".$table_id."&row_id=".$table_content->id;
+			echo "<td><a href='".wp_nonce_url($delete_link, 'doing_delete', 'delete')."'>delete</a></td>";
 			echo "</tr>";
 		}
 	
@@ -290,30 +327,52 @@ function on_activation()
    dbDelta( $sql);
 
 }
-add_action( 'wp_ajax_add_table', 'add_table_callback' );
-function add_table_callback(){
+add_action( 'wp_ajax_add_table', 'edoc_wpet_add_table_callback' );
+function edoc_wpet_add_table_callback(){
+		$current_user = wp_get_current_user();
+		$current_user_roles =$current_user->roles;
 		global $wpdb;
 		$admin_table	= $_POST['table_name'];
 		$arrs			= $_POST['arrs'];
-		if($admin_table == ""){
-			echo "<p style='color:Red;font-weight:bold'>Please complete all fields !</p>";
-			echo load_panel();
+		if(!in_array('administrator', $current_user_roles)){
+			echo '<div id="message" class="error warning is-dismissible">';
+			echo "<p>Sorry ! You don't have permission to create a new table.</p>";
+			echo '</div>';
 			die;
 		}
-		if($_POST['checkboxone'] != 'yes'){
-			$_POST['checkboxone'] = 'no';
+		if($admin_table == ""){
+			echo '<div id="message" class="error warning is-dismissible">';
+			echo "<p>Please complete all fields !</p>";
+			echo '</div>';
+			echo edoc_wpet_load_panel();
+			die;
 		}
-		if($_POST['checkboxtwo'] != 'yes'){
-			$_POST['checkboxtwo'] = 'no';
+		foreach ($arrs as $key => $value) {
+			if($value[0] == ''){
+				echo '<div id="message" class="error warning is-dismissible">';
+				echo "<p>Please complete all fields !</p>";
+				echo '</div>';
+				echo edoc_wpet_load_panel();
+				die;
+			}
+
 		}
+		$checkboxone = sanitize_text_field( $_POST['checkboxone'] );
+		$checkboxtwo = sanitize_text_field( $_POST['checkboxtwo'] );
+		if($checkboxone != 'yes'){
+			$checkboxone = 'no';
+		}
+		if($checkboxtwo != 'yes'){
+			$checkboxtwo = 'no';
+		}			
 		$manager_table = array(
-				'adminset' => $_POST['checkboxone'],
-				'value' => $_POST['valueone']
-			); 
+			'adminset' => $checkboxone,
+			'value' => sanitize_text_field($_POST['value_one'])
+		); 
 		$email_table = array(
-				'adminset' => $_POST['checkboxtwo'],
-				'value' => $_POST['valuetwo']
-			); 
+			'adminset' => $checkboxtwo,
+			'value' => sanitize_email($_POST['value_two'])
+		); 
 		$sql_add = "";
 		$insert_head = array();
 		$insert_head['id'] = NULL;
@@ -330,6 +389,9 @@ function add_table_callback(){
 		$wpdb->insert($table_name_admin, array('id' => NULL,'table_name' => $admin_table,'table_data' => $arraysave,'admin_table'=> json_encode($manager_table),'email_weekly'=>json_encode($email_table)));
 		$table_name_id = $wpdb->insert_id;
 		if($table_name_id){
+			echo '<div id="message" class="updated notice is-dismissible">';
+			
+			
 			echo "<p style='color:green;font-weight:bold'>Column id = ".$table_name_id."  has been inserted into database ".$table_name_admin."</p>";
 			
 			$edoc_table_sql = "CREATE TABLE ".$wpdb->prefix ."edoc_table_".$table_name_id." (id mediumint(9) NOT NULL AUTO_INCREMENT,$sql_add UNIQUE KEY id (id));";
@@ -343,34 +405,53 @@ function add_table_callback(){
 			if($edoc_table_check){
 				echo "<p style='color:green;font-weight:bold'>Table ".$wpdb->prefix ."edoc_checked_".$table_name_id." has been inserted into database "."</p>";
 			}				
-
+			echo '</div>';
 		}else{
+			echo '<div id="message" class="updated notice is-dismissible">';
 			echo "<p style='color:Red;font-weight:bold'>Can not insert database !</p>";
+			echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 		}
-		echo "<h2>Admin Other Tables</h2>";
-		echo load_panel();
+		
+		echo edoc_wpet_load_panel();
 		die;
 }
-function load_panel(){
+function edoc_wpet_load_panel(){
 	global $wpdb;
 	$table_name_admin = $wpdb->prefix ."edoc_tables";
 	$sql_load_table = "Select * FROM $table_name_admin";
 	$sql_load_table = $wpdb->get_results($sql_load_table);
-	$panel = '';
+	$current_user = wp_get_current_user();
+	$current_user_login = $current_user->user_login;
+	$count = $wpdb->num_rows;
+	$panel = '<div class="table_show"><h2>Admin Other Tabe</h2>';
 	$panel.= "<div class='table_show'>";
 	$panel.="<table>";
-		$panel.="<tr><th>Table Name</th><th>Click to admin</th><th>Shortcode</th><th></th></tr>";
+		$panel.="<tr><th>Table Name</th><th>Click to admin</th><th>Shortcode</th><th>Action</th></tr>";
 	foreach($sql_load_table as $sql_load_table_each){
-		$panel.="<tr><td>".$sql_load_table_each->table_name."</td><td><a href='".home_url()."/wp-admin/admin.php?page=edit-tables&table-id=".$sql_load_table_each->id."' >Click Here</a></td><td>[EDOCTABLE id='".$sql_load_table_each->id."']</td><td><a href='".home_url()."/wp-admin/admin.php?page=dp-table-admin&table-id=".$sql_load_table_each->id."&actions=delete' >Delete</a></td></tr>";
+
+		$admin_table = json_decode($sql_load_table_each->admin_table);
+
+		if($current_user_login == 'admin' || ($admin_table->adminset == "yes" && in_array($current_user_login, explode(',',$admin_table->value ))) ){
+
+
+			$delete_link = home_url()."/wp-admin/admin.php?page=dp-table-admin&table-id=".$sql_load_table_each->id."&actions=delete";
+			$panel.="<tr><td>".$sql_load_table_each->table_name."</td><td><a href='".wp_nonce_url(home_url()."/wp-admin/admin.php?page=edit-tables&table-id=".$sql_load_table_each->id,'doing_show','show_table')."' >Click Here</a></td><td>[EDOCTABLE id='".$sql_load_table_each->id."']</td><td><a href='".wp_nonce_url($delete_link, 'doing_delete', 'delete')."'>Delete</a></td></tr>";
+
+		}
 	}
 	$panel.="</table>";
-	$panel.="</div>";
-	return $panel;
+	$panel.="</div></div>";
+	if($count > 0){
+		return $panel;
+	}else{
+		return "";
+	}
+	
 }
 include "pagging_class.php";
 
-add_action('wp_head','pluginname_ajaxurl');
-function pluginname_ajaxurl() {
+add_action('wp_head','edoc_wpet_ajaxurl');
+function edoc_wpet_ajaxurl() {
 ?>
 <script type="text/javascript">
 var ajaxurls = '<?php echo admin_url('admin-ajax.php'); ?>';
@@ -392,6 +473,9 @@ function edoc_wpet_func( $atts ) {
 	$userlogged = $current_user->user_login;
 	if(!$userlogged){
 		$userlogged = 'non_member';
+	}
+	if(!wp_verify_nonce( $_GET['nonce'], 'doing_pagging' ) && isset($_GET['ipp'])){
+		return;
 	}
 	$table_name_admin = $wpdb->prefix ."edoc_tables";
 	$sql = "SELECT * FROM  $table_name_admin WHERE id=$table_id";
@@ -417,10 +501,9 @@ function edoc_wpet_func( $atts ) {
 	$sql_table_current = $wpdb->get_results($sql_table_current);
 	$sql_table_all = $wpdb->get_results($sql_table_all);
 	global $wp;
-	$current_url = home_url(add_query_arg(array(),$wp->request));
-	$pages = new Paginator;
+	$pages = new Edoc_wpet_pagination;
 	$pages->items_total = count($sql_table_all);
-	$pages->current_url = $current_url;
+	$pages->current_url = get_permalink();
 	$pages->mid_range = 5;
 	$pages->paginate();	
 	$showfrom = $paged*$perpages;
@@ -449,7 +532,7 @@ function edoc_wpet_func( $atts ) {
 	echo "</tr></thead>";		
 	if(count($sql_table_current) ==0){
 		echo "<tr id='nodata'><td colspan='".count($load_tables)."'>No data</td></tr>";
-	}ELSE{
+	}else{
 		foreach($sql_table_current as $table_content){
 			echo "<tr>";
 			for($i = 0; $i< count($load_tables) ; $i++){
@@ -467,7 +550,12 @@ function edoc_wpet_func( $atts ) {
 			echo "</tr>";
 		}
 	}		
-	echo "</table></div>";	echo '<script type="text/javascript" >		jQuery(document).ready(function($){			$("#sort_table").tablesorter({sortList: ['.$scriptaddd2.'], headers: {'.$scriptaddd1.'}});		});	</script>';
+	echo	"</table></div>";
+	echo 	'<script type="text/javascript">
+				jQuery(document).ready(function($){	
+					$("#sort_table").tablesorter({sortList: ['.$scriptaddd2.'], headers: {'.$scriptaddd1.'}});
+				});
+			</script>';
 	?>
 		<div class="paging_function">			
 			<ul class="list_page"><?php echo $pages->display_pages(); ?></ul>
@@ -481,9 +569,9 @@ function edoc_wpet_func( $atts ) {
 }
 add_shortcode( 'EDOCTABLE', 'edoc_wpet_func' );
 
-add_action( 'wp_ajax_nopriv_check_click', 'check_click_callback' );
-add_action( 'wp_ajax_check_click', 'check_click_callback' );
-function check_click_callback(){
+add_action( 'wp_ajax_nopriv_check_click', 'edoc_wpet_click_callback' );
+add_action( 'wp_ajax_check_click', 'edoc_wpet_click_callback' );
+function edoc_wpet_click_callback(){
 
 	$fileUrl		= $_POST['fileUrl'];
 	$fileUrl = explode('/', $fileUrl);
@@ -504,5 +592,82 @@ function check_click_callback(){
 
 }
 
+function edoc_wpet_file_creation($data,$file_name) {
+	$upload_dir = wp_upload_dir();
+
+	$dir = $upload_dir['basedir'].'/edoc_wpet/';
+	if ( ! file_exists( $dir ) ) {
+	    wp_mkdir_p( $dir );
+	}
+    $outstream = fopen($dir.$file_name, 'w');
+    
+	foreach ($data as $fields) {
+		$newarray = array();
+		foreach ($fields as $field) {
+			array_push($newarray,' '.$field);	
+		}
+	    fputcsv($outstream, $newarray,';','"');
+	}
+    fclose($outstream);
+}
+function edoc_wpet_send_email(){
+
+	global $wpdb;
+	$table_name_admin = $wpdb->prefix ."edoc_tables";
+	$table_name_checked = $wpdb->prefix ."edoc_checked_";
+	$sql = "SELECT * FROM  ".$table_name_admin;
+	$sql_fists = $wpdb->get_results($sql);
+	foreach($sql_fists as $sql_fist){
+		$email_weekly = $sql_fist->email_weekly;
+		$email_weekly = json_decode($email_weekly);
+		if($email_weekly->adminset == 'yes' && $email_weekly->value != ''){
+			$id = $sql_fist->id;
+			if($email_weekly->value != ''){
+				$arrays_checked = array();
+				$settitle_checked = Array (
+					'id' => 'Id',
+					'date' => 'Date',
+					'Docname' => 'Docname',
+					'username' => 'Username',
+					'firstname' => 'Firstname',
+					'lastname' => 'Lastname'
+				);
+				$upload_dir = wp_upload_dir();
+				$dir = $upload_dir['basedir'].'/edoc_wpet';
+				$file = $dir.'/check_list_'.$id.'.csv';
+
+				array_push($arrays_checked,$settitle_checked);
+				$table_name_checkeds = $table_name_checked.$id;
+				$sql_table_current_checked = "SELECT * FROM  $table_name_checkeds ORDER BY `id` ASC";
+				$sql_load_inner_checked = $wpdb->get_results($sql_table_current_checked);
+
+				foreach($sql_load_inner_checked as $sql_load_inner_checked_each){
+					$arraygot = get_object_vars($sql_load_inner_checked_each);
+					array_push($arrays_checked,$arraygot);			
+				}
+
+				edoc_wpet_file_creation($arrays_checked,'check_list_'.$id.'.csv');
+				$attachments = array( $file );
+				$headers[] = 'From: Edoc Table <'.get_option('admin_email').'>';
+				$headers[] = 'Cc: wordpress.org'; 
+				$interval = 7 * 24 * 60 * 60;
+				$email = str_replace('@', "___", $email_weekly->value);
+				if(!get_option($email)){
+					update_option($email,time());
+					wp_mail($email_weekly->value, 'eDoc Weekly Email send per 5 min (test mode)', 'Hello , this is list users downloaded file in your table!', $headers, $attachments );	
+				}else{
+					if(time() - (int)get_option($email) > (int)$interval ){
+						update_option($email,time());
+						wp_mail($email_weekly->value, 'eDoc Weekly Email send per 5 min (test mode)', 'Hello , this is list users downloaded file in your table!', $headers, $attachments );
+					}
+
+				}
+
+				
+			}
+		}
+	}	
+}
+add_action('init','edoc_wpet_send_email');
 
 ?>

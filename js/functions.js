@@ -5,6 +5,7 @@ jQuery(document).ready(function($){
 		//$('.just_new')
 	});
 	$('.bottom_panel input').click(function(){
+		$(this).addClass('posting');
 		$('#ajaxloading').show();
 		var table_name = $('#table_name_create').val();
 		var arrss = new Array();
@@ -44,7 +45,8 @@ jQuery(document).ready(function($){
 		$.post(ajaxurl, data, function(response) {
 			$('.reponse').html(response);
 			$('#ajaxloading').hide();
-			window.localtion.reload();
+			$('.bottom_panel input').removeClass('posting');
+			//location.reload();
 		});
 		
 	});
@@ -91,7 +93,10 @@ jQuery(document).ready(function($){
         custom_uploader.open();
  	return false;
     });
-    $('.date_picker').datepicker({ dateFormat: 'yy-mm-dd' });
+    if($(".date_picker")[0]){
+		$('.date_picker').datepicker({ dateFormat: 'yy-mm-dd' });
+	}
+    
 	 
 
 })
