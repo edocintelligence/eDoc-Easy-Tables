@@ -39,7 +39,7 @@ Tables, table, table manager, responsive tables, tables manager, email reporting
 * Can I add individual users to admin a table?
 	* YES! Add the username to the username field on the specific tables you wish to have someone admin. Once they log into the backend they will be able to edit that table they have permission for.
 * Can I get reports on activity?
-	* Yes. We have a CSV emailed to the admin on a weekly basis. This contains information on the amount of activity for a "download" type column.
+	* Yes! We have a CSV emailed to the admin on a weekly basis. This contains information on the amount of activity for a "download" type column.
 
 == Screenshots ==
 
