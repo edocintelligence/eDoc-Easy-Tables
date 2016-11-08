@@ -43,10 +43,11 @@ Tables, table, table manager, responsive tables, tables manager, email reporting
 
 == Screenshots ==
 
-1. The Yoast SEO plugin general meta box. You'll see this on edit post pages, for posts, pages and custom post types.
-2. Some of the sites using this Yoast SEO plugin.
-3. The Yoast SEO settings for a taxonomy.
-4. The fully configurable XML sitemap for Yoast SEO.
+1. Beautiful tables are easy.
+2. Create table columns with flexible types and names easy.
+3. Admin a table to start filling in the rows.
+4. Setup .
+5. The fully configurable XML sitemap for Yoast SEO.
 
 == Changelog ==
 
