@@ -6,13 +6,13 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: Tables, table, table manager, responsive tables, tables manager
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 1.22
+Stable tag: 1.23
 
 Super simple table creation, updating, reporting and management. Delegate editing access and send weekly reports as well
 
 == Description ==
 
-Create and manage multiple tables with ease. Take the headache out of making new table layouts manually with our ut-of-the-box easy plugin. Delegate table management to any user, on a table by table basis. Get reports emailed weekly, on a table by table basis, to see how engaging your content is.
+Create and manage multiple tables with ease. Take the headache out of making new table layouts manually with our out-of-the-box easy plugin. Delegate table management to any user, on a table by table basis. Get reports emailed weekly, on a table by table basis, to see how engaging your content is.
 
 Supports sorting, pagination, multiple types for file support, and page load default sort display.
 
@@ -46,17 +46,22 @@ Tables, table, table manager, responsive tables, tables manager, email reporting
 1. Beautiful tables are easy.
 2. Create table columns with flexible types and names easy.
 3. Admin a table to start filling in the rows.
-4. Setup .
-5. The fully configurable XML sitemap for Yoast SEO.
 
 == Changelog ==
+
+= 1.23 =
+
+Release Date: November 17th, 2016
+
+* Bugfixes:
+	* Corrected issue causing errors.
 
 = 1.22 =
 
 Release Date: November 8th, 2016
 
 * Enhancements:
-	* Included a new video walkthrough for .
+	* Included a new video walkthrough for tutorial.
 
 * Bugfixes:
 	* Corrected issue with CSS.
