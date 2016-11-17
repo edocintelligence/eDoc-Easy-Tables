@@ -427,11 +427,14 @@ function edoc_wpet_load_panel(){
 	$panel.= "<div class='table_show'>";
 	$panel.="<table>";
 		$panel.="<tr><th>Table Name</th><th>Click to admin</th><th>Shortcode</th><th>Action</th></tr>";
+	if(count($sql_load_table)  == 0){
+		$panel.="<tr><td colspan='4'> data not found !</td></tr>";
+	}
 	foreach($sql_load_table as $sql_load_table_each){
 
 		$admin_table = json_decode($sql_load_table_each->admin_table);
 
-		if($current_user_login == 'admin' || ($admin_table->adminset == "yes" && in_array($current_user_login, explode(',',$admin_table->value ))) ){
+		if(in_array( 'administrator', (array) $current_user->roles )|| ($admin_table->adminset == "yes" && in_array($current_user_login, explode(',',$admin_table->value ))) ){
 
 
 			$delete_link = home_url()."/wp-admin/admin.php?page=dp-table-admin&table-id=".$sql_load_table_each->id."&actions=delete";
@@ -460,6 +463,7 @@ var ajaxurls = '<?php echo admin_url('admin-ajax.php'); ?>';
 }
 
 function edoc_wpet_func( $atts ) {	
+
 	wp_enqueue_style( 'sort-style', plugins_url( '/css/sortstyle.css' , __FILE__ ));
 	wp_enqueue_script( 'checked-click-function', plugins_url( '/js/checked_click.js' , __FILE__ ), array(), '1.0.0', true );	
 	wp_enqueue_script( 'sort-function', plugins_url( '/js/jquery.tablesorter.min.js' , __FILE__ ), array(), '1.0.0', true );
@@ -474,7 +478,7 @@ function edoc_wpet_func( $atts ) {
 	if(!$userlogged){
 		$userlogged = 'non_member';
 	}
-	if(!wp_verify_nonce( $_GET['nonce'], 'doing_pagging' ) && isset($_GET['ipp'])){
+	if(isset($_GET['nonce']) && !wp_verify_nonce( $_GET['nonce'], 'doing_pagging' ) && isset($_GET['ipp'])){
 		return;
 	}
 	$table_name_admin = $wpdb->prefix ."edoc_tables";
@@ -497,7 +501,7 @@ function edoc_wpet_func( $atts ) {
 	}
 	$sql_table_all = "SELECT * FROM  $table_name_ad";
 	$sql_table_current = "SELECT * FROM  $table_name_ad "." ORDER BY column_0 DESC "." $milits";
-
+	ob_start();
 	$sql_table_current = $wpdb->get_results($sql_table_current);
 	$sql_table_all = $wpdb->get_results($sql_table_all);
 	global $wp;
@@ -566,6 +570,7 @@ function edoc_wpet_func( $atts ) {
 	}else{
 		echo "<b style='color:red'>Table does not exist</b>";
 	}
+	return ob_get_clean();
 }
 add_shortcode( 'EDOCTABLE', 'edoc_wpet_func' );
 

@@ -36,9 +36,9 @@ jQuery(document).ready(function($){
 			table_name	: table_name,
 			arrs		: arrss,
 			checkboxone : check1,
-			valueone    : $('#value_one').val(),
+			value_one    : $('#value_one').val(),
 			checkboxtwo : check2,
-			valuetwo    : $('#value_two').val()
+			value_two    : $('#value_two').val()
 		};
 		//alert(JSON.stringify(data));
 		//return false;
