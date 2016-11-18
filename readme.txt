@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: Tables, table, table manager, responsive tables, tables manager
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 1.24
+Stable tag: 1.25
 
 Super simple table creation, updating, reporting and management. Delegate editing access and send weekly reports as well
 
@@ -40,14 +40,23 @@ Tables, table, table manager, responsive tables, tables manager, email reporting
 	* YES! Add the username to the username field on the specific tables you wish to have someone admin. Once they log into the backend they will be able to edit that table they have permission for.
 * Can I get reports on activity?
 	* Yes! We have a CSV emailed to the admin on a weekly basis. This contains information on the amount of activity for a "download" type column.
-
+* Can I update the CSS for the tables?
+	* You can but the template CSS styles for TR TD TABLE will be used by default. If you have a template that does not have these styles then it will look wierd out of the box. We suggest you add bootstrap generic table CSS. We will have a styles selector override builtin future versions, so you may wish to just wait.
+	
 == Screenshots ==
 
-1. Beautiful tables are easy.
-2. Create table columns with flexible types and names easy.
-3. Admin a table to start filling in the rows.
+1. Beautiful tables are easy to create with our interface.
+2. A Sample table columns a few types of content and adopting template default styles.
 
 == Changelog ==
+
+= 1.25 =
+
+Release Date: November 18th, 2016
+
+* Enhancements:
+	* Updated Icons for better readability.
+	* Added Screenshots.
 
 = 1.24 =
 
