@@ -4,7 +4,7 @@ Plugin Name: eDoc Easy Tables
 Plugin URI: https://edocintelligence.com/
 Description: Easy to use table tool. Create, update and reporting with intuitive manager interface
 Author: eDoc Intelligence 
-Version: 1.23
+Version: 1.24
 author URI: https://edocintelligence.com/
 */ 
 if ( ! defined( 'ABSPATH' ) ) exit;

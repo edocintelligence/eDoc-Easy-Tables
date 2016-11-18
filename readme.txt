@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: Tables, table, table manager, responsive tables, tables manager
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 1.23
+Stable tag: 1.24
 
 Super simple table creation, updating, reporting and management. Delegate editing access and send weekly reports as well
 
@@ -48,6 +48,14 @@ Tables, table, table manager, responsive tables, tables manager, email reporting
 3. Admin a table to start filling in the rows.
 
 == Changelog ==
+
+= 1.24 =
+
+Release Date: November 18th, 2016
+
+* Enhancements:
+	* Overhaul of UX elements. Modern card based layout for table generation.
+	* Mobile enhancements.
 
 = 1.23 =
 
