@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 add_action('admin_menu', 'edoc_wpet_create_menu');
 function edoc_wpet_create_menu() {
 
-	$page_hook_suffix =  add_menu_page('Edoc tables', 'Edoc tables', 'read', "dp-table-admin", 'edoc_wpet_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
-	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Edoc Tables", "Edit Edoc Tables", 'read', "edit-tables", "edoc_wpet_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
+	$page_hook_suffix =  add_menu_page('eDoc Tables', 'eDoc Tables', 'read', "dp-table-admin", 'edoc_wpet_admin_tables_page',plugins_url( 'images/logoNewSquare.png' , __FILE__));
+	$page_hook_suffixsub = add_submenu_page( "dp-table-admin", "Edit Tables", "Edit Tables", 'read', "edit-tables", "edoc_wpet_edit_tables_page" ,plugins_url( 'images/logoNewSquare.png' , __FILE__));
 
 	add_action('admin_print_scripts-' . $page_hook_suffix, 'edoc_wpet_manager_scripts');
 	add_action('admin_print_scripts-' . $page_hook_suffixsub, 'edoc_wpet_manager_scripts');
@@ -52,7 +52,7 @@ function edoc_wpet_admin_tables_page(){
 		$DELETE = "DELETE FROM $table_name_admin WHERE $table_name_admin.`id` = $table_id";
 		$CHECK = $wpdb->query($DELETE);
 		IF($CHECK){
-			$notification =  "Table id ".$table_id." and data for this table have been deleted !";
+			$notification =  "Table id ".$table_id." and data for this table are now deleted";
 			$DELETE = "DROP TABLE $table_name_edit";
 			$CHECK = $wpdb->query($DELETE);
 			$notification =  '<div id="message" class="updated notice is-dismissible"><p>'.$notification.'</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
@@ -66,55 +66,65 @@ function edoc_wpet_admin_tables_page(){
 	if(in_array('administrator', $current_user_roles)){	
 	echo <<<EOT
 		<div class="edoc_wpet_wrapper">
-
 			<h1>$title  - {$current_user->display_name}</h1>
-			<div class='content_table'>
-				<!--<button id="create_new_table">Create new table</button>-->
-				<div class="create_panel">
-					<h3>Create New Table</h2>
-					<div class='right_session'>
-						<div class='haf_div'>
-							<label><input type='checkbox' name='checkboxone' id='addtion_one_checkbox' value='yes'>Click to add additional table administrators </label>
-							<label><input type='text' value='' name='value_one' id='value_one'></label>
+			$notification
+			<div id="wpet_main_body">
+				<div class='content_table'>
+					<!--<button id="create_new_table">Create new table</button>-->
+					<div class="create_panel">
+						<h3>Create New Table</h2>
+						<div class='right_session'>
+							<div class='haf_div'>
+								<label><input type='checkbox' name='checkboxone' id='addtion_one_checkbox' value='yes'>Add Table Admin</label>
+								<label><input type='text' value='' name='value_one' id='value_one'></label>
+							</div>
+							<div class='haf_div'>
+								<label><input type='checkbox' name='checkboxtwo' id='addtion_two_checkbox' value='yes'>Email Weekly CSV</label>
+								<label><input type='email' value='' name='value_two' id='value_two'></label>
+							</div>
 						</div>
-						<div class='haf_div'>
-							<label><input type='checkbox' name='checkboxtwo' id='addtion_two_checkbox' value='yes'>Click to email weekly access report csv file</label>
-							<label><input type='email' value='' name='value_two' id='value_two'></label>
+						<div class="top_panel">
+							<input type="text" id="table_name_create" name="table_name_create" value="" placeholder="Table Name" />
 						</div>
-					</div>
-					<div class="top_panel">
-						<input type="text" id="table_name_create" name="table_name_create" value="" placeholder="Table Name" />
-					</div>
-					<div class="main_panel">
-						<div class="each_panel" id="first_panel">
-							<p><input type="text" name="column_name" required class='column_name' value="" placeholder="Column name"/></p>
-							
-							<p>Type : <select name="column_type" class="column_type">
-								<option value="text">Text input</option>
-								<option value="date_picker">Date Picker</option>
-								<option value="upload">Upload file</option>
-							</select></p>
-							<p>Sort : <select name="column_sort" class="column_sort"><option value="no">No</option>								<option value="yes">Yes</option>							</select></p>							<p>Default sort : <input type="checkbox" name="column_sort_default" class='column_sort_default' value="yes"/></p>
+						<div class="main_panel">
+							<div class="each_panel" id="first_panel">
+								<p><input type="text" name="column_name" required class='column_name' value="" placeholder="Column Name"/></p>
+								
+								<p>Type : <select name="column_type" class="column_type">
+									<option value="text">Text Input</option>
+									<option value="date_picker">Date Picker</option>
+									<option value="upload">Uploaded File</option>
+								</select>
+								</p>
+								<p>Sort : <select name="column_sort" class="column_sort">
+									<option value="no">No</option>
+									<option value="yes">Yes</option>
+								</select>
+								</p>
+								<p>Default Sort : <input type="checkbox" name="column_sort_default" class='column_sort_default' value="yes"/>
+								</p>
+							</div>
+							<div class="add_panel">
+								<button class="button button-primary" id="create_new_column">Create New Column</button>
+							</div>						
 						</div>
-						<div class="add_panel">
-							<button class="button button-primary" id="create_new_column">Create new column</button>
-						</div>						
+						<div class="bottom_panel">
+							<input type="submit" id='create_table_layout' name="create_table" class="button button-primary" value="Save Table Layout" /><img src="$loading" id="ajaxloading" />
+						</div>				
 					</div>
-					<div class="bottom_panel">
-						<input type="submit" id='create_table_layout' name="create_table" class="button button-primary" value="Save Table Layout" /><img src="$loading" id="ajaxloading" />
-					</div>				
 				</div>
 			</div>
-			$notification
-			<div class="reponse">
-			$show_panel
+			<div id="wpet_sidebar">
+				sidebar
+			</div>
+			<div id="wpet_response_group" class="reponse">
+				$show_panel
 			</div>
 		</div>
-
 EOT;
 }else{
 		echo '<div class="edoc_wpet_wrapper">';
-				echo "<p>You do not have sufficient permissions to access this page !</p>";
+				echo "<p>Do you have access level for this page? Try Again.</p>";
 		echo '</div>';	
 }
 }
@@ -125,7 +135,8 @@ function edoc_wpet_edit_tables_page(){
 		echo edoc_wpet_load_panel();
 	}else{
 		echo '<div class="edoc_wpet_wrapper">';
-				echo '<p>Data seems empty, please add the first data</p>';
+				echo '<p>You cannot edit a table, without first creating one.</p><br/>';
+				echo '<a href="/wp-admin/admin.php?page=dp-table-admin">Click here to create one now</a>';
 		echo '</div>';
 	}
 	$table_id = @$_GET['table-id'];
@@ -135,7 +146,7 @@ function edoc_wpet_edit_tables_page(){
 		$DELETE = "DELETE FROM $table_name_edit WHERE $table_name_edit.`id` = $ROW_ID";
 		$CHECK = $wpdb->query($DELETE);
 		IF($CHECK){
-			echo '<div id="message" class="updated notice is-dismissible"><p>Row id '.$ROW_ID.' have been deleted !</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+			echo '<div id="message" class="updated notice is-dismissible"><p>Row '.$ROW_ID.' deleted</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss notice.</span></button></div>';
 		}
 	}
 	
@@ -203,7 +214,6 @@ function edoc_wpet_edit_tables_page(){
 			return false;
 		}			
 
-
 		$checked = '';
 		$checked2 = '';
 		$admindata = $sql_fist->admin_table;
@@ -225,12 +235,12 @@ function edoc_wpet_edit_tables_page(){
 		if(in_array('administrator', $current_user_roles)){
 
 			echo	'<div class="haf_div">
-						<label><input type="checkbox" name="checkboxone" '.$checked.' id="addtion_one_checkbox" value="yes">Click to add additional table administrators </label>
+						<label><input type="checkbox" name="checkboxone" '.$checked.' id="addtion_one_checkbox" value="yes">Add Table Admin</label>
 						<label><input type="text" value="'.$admindata->value.'" name="value_one" id="value_one"></label>
 					</div>';
 		}
-		echo		'<div class="haf_div">
-						<label><input type="checkbox" name="checkboxtwo" '.$checked2.' id="addtion_two_checkbox" value="yes">Click to email weekly access report csv file</label>
+			echo	'<div class="haf_div">
+						<label><input type="checkbox" name="checkboxtwo" '.$checked2.' id="addtion_two_checkbox" value="yes">Email Weekly CSV</label>
 						<label><input type="email" value="'.$email_weekly->value.'" name="value_two" id="value_two"></label>
 					</div>
 					<div class="haf_div">
@@ -242,7 +252,7 @@ function edoc_wpet_edit_tables_page(){
 		</div>';
 		
 		$load_tables = json_decode($load_tables);
-		echo '<h2>Edit `'.$sql_fist->table_name."` Table</h2>";
+		echo '<h2>Editing `'.$sql_fist->table_name."` Table</h2>";
 		$sql_table_current = "SELECT * FROM  $table_name_ad";
 		$sql_table_current = $wpdb->get_results($sql_table_current);
 		echo "<div class='table_show'><form method='post' ><table>";
@@ -250,7 +260,7 @@ function edoc_wpet_edit_tables_page(){
 		foreach($load_tables as $load_table){
 			echo "<th>".$load_table[0]."</th>";		
 		}
-			echo "<th width='100px'><button class='button button-primary' id='add_new_row'>Add new row</button></th>";
+			echo "<th width='100px'><button class='button button-primary' id='add_new_row'>Add New Row</button></th>";
 		echo "</tr>";		
 		if(count($sql_table_current) ==0){
 			echo "<tr id='nodata'><td colspan='".(count($load_tables)+1)."'>No data</td></tr>";
@@ -297,14 +307,11 @@ function edoc_wpet_edit_tables_page(){
 			echo "<td><a href='".wp_nonce_url($delete_link, 'doing_delete', 'delete')."'>delete</a></td>";
 			echo "</tr>";
 		}
-	
 			
 		echo "</table>						
 			</form>
 		</div>";
 	}
-
-	
 
 }
 register_activation_hook(__FILE__, 'on_activation');
@@ -390,20 +397,19 @@ function edoc_wpet_add_table_callback(){
 		$table_name_id = $wpdb->insert_id;
 		if($table_name_id){
 			echo '<div id="message" class="updated notice is-dismissible">';
-			
-			
-			echo "<p style='color:green;font-weight:bold'>Column id = ".$table_name_id."  has been inserted into database ".$table_name_admin."</p>";
+				
+			echo "<p style='color:green;font-weight:bold'>Column id = ".$table_name_id."  has been saved".$table_name_admin."</p>";
 			
 			$edoc_table_sql = "CREATE TABLE ".$wpdb->prefix ."edoc_table_".$table_name_id." (id mediumint(9) NOT NULL AUTO_INCREMENT,$sql_add UNIQUE KEY id (id));";
 			$edoc_table_check = $wpdb->query($edoc_table_sql);	
 			if($edoc_table_check){
-				echo "<p style='color:green;font-weight:bold'>Table ".$wpdb->prefix ."edoc_table_".$table_name_id." has been inserted into database "."</p>";
+				echo "<p style='color:green;font-weight:bold'>Table ".$wpdb->prefix ."edoc_table_".$table_name_id." has been saved"."</p>";
 			}
 			$edoc_table_sql = "CREATE TABLE ".$wpdb->prefix ."edoc_checked_".$table_name_id." (id mediumint(9) NOT NULL AUTO_INCREMENT,  `date` datetime NOT NULL,  `doc_name` varchar(1024) NOT NULL,  `username` varchar(256) NOT NULL ,`firstname` varchar(256) NOT NULL,`lastname` varchar(256) NOT NULL, UNIQUE KEY id (id));";
 			$edoc_table_check = $wpdb->query($edoc_table_sql);	
 
 			if($edoc_table_check){
-				echo "<p style='color:green;font-weight:bold'>Table ".$wpdb->prefix ."edoc_checked_".$table_name_id." has been inserted into database "."</p>";
+				echo "<p style='color:green;font-weight:bold'>Table ".$wpdb->prefix ."edoc_checked_".$table_name_id." has been saved"."</p>";
 			}				
 			echo '</div>';
 		}else{
@@ -423,10 +429,10 @@ function edoc_wpet_load_panel(){
 	$current_user = wp_get_current_user();
 	$current_user_login = $current_user->user_login;
 	$count = $wpdb->num_rows;
-	$panel = '<div class="table_show"><h2>Admin Other Tabe</h2>';
+	$panel = '<div class="table_show"><h2>Edit Other Tables</h2>';
 	$panel.= "<div class='table_show'>";
-	$panel.="<table>";
-		$panel.="<tr><th>Table Name</th><th>Click to admin</th><th>Shortcode</th><th>Action</th></tr>";
+	$panel.="<table class='wpetEditTables'>";
+	$panel.="<tr style='background-color:purple;color:white;'><th>Table Name</th><th>Click to Edit</th><th>Shortcode</th><th>Remove Table</th></tr>";
 	if(count($sql_load_table)  == 0){
 		$panel.="<tr><td colspan='4'> data not found !</td></tr>";
 	}
@@ -525,7 +531,6 @@ function edoc_wpet_func( $atts ) {
 		if($load_table[2] != 'yes'){
 			$scriptaddd1.=$key.':{sorter: false},';
 		}
-	
 		if($load_table[3] == 'true'){
 			$scriptaddd2.='['.$key.',1],';
 		}		
@@ -653,22 +658,19 @@ function edoc_wpet_send_email(){
 
 				edoc_wpet_file_creation($arrays_checked,'check_list_'.$id.'.csv');
 				$attachments = array( $file );
-				$headers[] = 'From: Edoc Table <'.get_option('admin_email').'>';
+				$headers[] = 'From: eDoc Easy Tables - <'.get_option('admin_email').'>';
 				$headers[] = 'Cc: wordpress.org'; 
 				$interval = 7 * 24 * 60 * 60;
 				$email = str_replace('@', "___", $email_weekly->value);
 				if(!get_option($email)){
 					update_option($email,time());
-					wp_mail($email_weekly->value, 'eDoc Weekly Email send per 5 min (test mode)', 'Hello , this is list users downloaded file in your table!', $headers, $attachments );	
+					wp_mail($email_weekly->value, 'eDoc Weekly Email send per 5 min (test mode)', 'Hello , this is list of users that downloaded file in your table!', $headers, $attachments );	
 				}else{
 					if(time() - (int)get_option($email) > (int)$interval ){
 						update_option($email,time());
-						wp_mail($email_weekly->value, 'eDoc Weekly Email send per 5 min (test mode)', 'Hello , this is list users downloaded file in your table!', $headers, $attachments );
+						wp_mail($email_weekly->value, 'eDoc Weekly Email send per 5 min (test mode)', 'Hello , this is list of users that downloaded file in your table!', $headers, $attachments );
 					}
-
 				}
-
-				
 			}
 		}
 	}	

@@ -1,3 +1,23 @@
+.edoc_wpet_wrapper {
+    width: 100%;    
+}
+#wpet_main_body{
+    width: 75%;
+    float: left;
+    display:inline-block;
+    }
+#wpet_sidebar{
+    width: 25%;
+    float:left;
+    display:inline-block;
+    }
+#wpet_response_group{
+    display:inline-block;
+    width:100%;
+    }
+.each_panel{
+    background-color:#efefef;        
+    }
 .each_panel,.add_panel{
 	width: 210px;
 	float: left;
@@ -19,8 +39,10 @@
 }
 .create_panel{
 	padding: 10px;
-	border: 1px solid gray;	
-	overflow: hidden;	
+	border: 1px solid gray;
+	border-radius:5px;
+	background-color:#fefefe;
+	overflow: hidden;
 	margin-right:10px;
 }
 .content_table{
@@ -61,14 +83,23 @@
 	display:none;
 }
 .right_session{
-	width:700px;
-	float:right;
+	width: 330px;
+    border-left: 1px solid darkgrey;
+    float: right;
+    background-color: #eee;
+    height: 51px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 15px;
+    margin-top: -28px;
+    margin-right: -10px;
+    border-bottom: 1px solid darkgrey;
+    border-top: 0px solid #eee;
 }
 .right_session .haf_div{
 	width:45%;
 	margin-right:5%;
 	float: left;
-
 }
 .right_session .haf_div label{
 	width:100%;
@@ -77,21 +108,20 @@
 .content_table input[type=text]{
 	display: block;
 	width: 100%;
-	height: 34px;
-	padding: 6px 12px;
 	font-size: 14px;
 	line-height: 1.42857143;
 	color: #555;
 	background-color: #fff;
 	background-image: none;
 	border: 1px solid #ccc;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	border-radius: 5px;
 }
+
+input#value_two{
+    border:1px solid #ccc;
+    border-radius: 5px;
+    height:28px;
+    }
 
 .just_new{
 	position: absolute;
@@ -138,3 +168,21 @@
     width: 645px !important;	
     display: inline-block;
 }
+#create_table_layout{
+    float:right;
+    background-color:#9ecc42;
+    background:#9ecc42;
+    border:#9ecc42;
+    box-shadow:0 1px 0 #9ecc42;
+    text-shadow:none;
+    color: white;
+}
+.wpetEditTables tr{
+    background-color:#fafafa;
+    }
+.wpetEditTables tbody tr:nth-child(odd){
+    background-color:#dfdfdf;
+    }
+.wpetEditTables tbody tr:nth-child(even){
+    background-color:#fafafa;
+    }
