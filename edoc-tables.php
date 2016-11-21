@@ -4,7 +4,7 @@ Plugin Name: eDoc Easy Tables
 Plugin URI: https://edocintelligence.com/
 Description: Easy to use table tool. Create, update and reporting with intuitive manager interface
 Author: eDoc Intelligence LLC
-Version: 1.25
+Version: 1.26
 Text Domain: edoc-easy-tables
 Author URI: https://profiles.wordpress.org/jerodmoore/
 License: GNU General Public License v3 or later
@@ -142,7 +142,7 @@ function edoc_wpet_admin_tables_page(){
 					    
 					    <br><a href="https://wordpress.org/support/plugin/edoc-easy-tables/reviews/"><b>Like Us? Review Us!</b></a>
 					    <br><a href="https://wordpress.org/support/plugin/edoc-easy-tables">Need Help? Got an Idea? Post a Question!</a>
-					    <br><a href="https://edocintelligence.com">eDoc Intelligence Homepage</a>
+					    <br><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=care%40edocintelligence%2ecom&item_name=eDoc%20easy%20tables&item_number=Support%20Open%20Source&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">Keep Us Coding, Donate a Buck.</a>
 					    
 					</div>
 				</div>

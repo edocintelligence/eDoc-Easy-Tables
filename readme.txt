@@ -4,9 +4,9 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=care%4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: Tables, table, table manager, responsive tables, tables manager
-Requires at least: 4.4
-Tested up to: 4.6
-Stable tag: 1.25
+Requires at least: 4.2
+Tested up to: 4.7
+Stable tag: 1.27
 
 Super simple table creation, updating, reporting and management. Delegate editing access and send weekly reports as well
 
