@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 You can contact us at info@edocintelligence.com
 
-*/ 
+*/
 if ( ! defined( 'ABSPATH' ) ) exit;
 add_action('admin_menu', 'edoc_wpet_create_menu');
 function edoc_wpet_create_menu() {
@@ -77,73 +77,80 @@ function edoc_wpet_admin_tables_page(){
 
 	if(in_array('administrator', $current_user_roles)){	
 	echo <<<EOT
-		<div class="edoc_wpet_wrapper">
-			<h1>$title  - {$current_user->display_name}</h1>
-			$notification
-			<div id="wpet_main_body">
-				<div class='content_table'>
-					<!--<button id="create_new_table">Create new table</button>-->
-					<div class="create_panel">
-						<h3>Create New Table</h2>
-						<div class='right_session'>
-							<div class='haf_div'>
-								<label><input type='checkbox' name='checkboxone' id='addtion_one_checkbox' value='yes'>Add Table Admin</label>
-								<label><input type='text' value='' name='value_one' id='value_one'></label>
-							</div>
-							<div class='haf_div'>
-								<label><input type='checkbox' name='checkboxtwo' id='addtion_two_checkbox' value='yes'>Email Weekly CSV</label>
-								<label><input type='email' value='' name='value_two' id='value_two'></label>
-							</div>
+	<div class="edoc_wpet_wrapper">
+		<h1>$title  - {$current_user->display_name}</h1>
+		$notification
+		<div id="wpet_main_body">
+			<div class='content_table'>
+				<!--<button id="create_new_table">Create new table</button>-->
+				<div class="create_panel">
+					<h3>Create New Table</h3>
+					
+					<div class='right_session'>
+						<div class='haf_div'>
+							<label><input type='checkbox' name='checkboxone' id='addtion_one_checkbox' value='yes'>Add Table Admin</label>
+							<label><input type='text' value='' name='value_one' id='value_one'></label>
 						</div>
-						<div class="top_panel">
-							<input type="text" id="table_name_create" name="table_name_create" value="" placeholder="Table Name" />
+						
+						<div class='haf_div'>
+							<label><input type='checkbox' name='checkboxtwo' id='addtion_two_checkbox' value='yes'>Email Weekly CSV</label>
+							<label><input type='email' value='' name='value_two' id='value_two'></label>
 						</div>
-						<div class="main_panel">
-							<div class="each_panel" id="first_panel">
-								<p><input type="text" name="column_name" required class='column_name' value="" placeholder="Column Name"/></p>
-								
-								<p>Type : <select name="column_type" class="column_type">
-									<option value="text">Text Input</option>
-									<option value="date_picker">Date Picker</option>
-									<option value="upload">Uploaded File</option>
-								</select>
-								</p>
-								<p>Sort : <select name="column_sort" class="column_sort">
-									<option value="no">No</option>
-									<option value="yes">Yes</option>
-								</select>
-								</p>
-								<p>Default Sort : <input type="checkbox" name="column_sort_default" class='column_sort_default' value="yes"/>
-								</p>
-							</div>
-							<div class="add_panel">
-								<button class="button button-primary" id="create_new_column">Create New Column</button>
-							</div>						
-						</div>
-						<div class="bottom_panel">
-							<input type="submit" id='create_table_layout' name="create_table" class="button button-primary" value="Save Table Layout" /><img src="$loading" id="ajaxloading" />
-						</div>				
 					</div>
+					
+					<div class="top_panel">
+						<input type="text" id="table_name_create" name="table_name_create" value="" placeholder="Table Name" />
+					</div>
+					
+					<div class="main_panel">
+						<div class="each_panel" id="first_panel">
+							<p><input type="text" name="column_name" required class='column_name' value="" placeholder="Column Name"/></p>
+							
+							<p>Type : <select name="column_type" class="column_type">
+								<option value="text">Text Input</option>
+								<option value="date_picker">Date Picker</option>
+								<option value="upload">Uploaded File</option>
+							</select>
+							</p>
+							<p>Sort : <select name="column_sort" class="column_sort">
+								<option value="no">No</option>
+								<option value="yes">Yes</option>
+							</select>
+							</p>
+							<p>Default Sort : <input type="checkbox" name="column_sort_default" class='column_sort_default' value="yes"/>
+							</p>
+						</div>
+						<div class="add_panel">
+							<button class="button button-primary" id="create_new_column">Create New Column</button>
+						</div>						
+					</div>
+					<div class="bottom_panel">
+						<input type="submit" id='create_table_layout' name="create_table" class="button button-primary" value="Save Table Layout" /><img src="$loading" id="ajaxloading" />
+					</div>				
 				</div>
 			</div>
 			<div id="wpet_sidebar">
-				<div class="wpet_sidebarTitle"><h3>Quick Assists</h3></div>
-					<div class="wpet_sidebarHolder">
-						<div class="wpet_sidebarVideo">
-							<iframe width="100%" src="https://www.youtube.com/embed/NZn9xnue0Dk" frameborder="0" allowfullscreen></iframe>
-						</div>
+				<div class="sidebarTitle">
+			        <h2>Quick Steps</h2>
+			    </div>
+				<div class="sidebarWrapper">
+					<div class="sidebarVideo">
+						<iframe width="100%" height="100%" src="https://www.youtube.com/embed/qpBJTimVlrw" frameborder="0" allowfullscreen></iframe>
+					</div>
 					<hr>
-						<div class="wpet_sidebarLinks">
-							<a href="#">Quick Help Guide</a>
-							<a href="#">Help Forums</a>
-							<a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=care%40edocintelligence%2ecom&item_name=eDoc%20easy%20tables&item_number=Support%20Open%20Source&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">Donate</a>
-						</div>
+					<div="sidebarText">
+					    
+					    <br><a href="https://wordpress.org/support/plugin/edoc-easy-tables/reviews/"><b>Like Us? Review Us!</b></a>
+					    <br><a href="https://wordpress.org/support/plugin/edoc-easy-tables">Need Help? Got an Idea? Post a Question!</a>
+					    <br><a href="https://edocintelligence.com">eDoc Intelligence Homepage</a>
+					    
+					</div>
 				</div>
 			</div>
+		</div>
 			<div id="wpet_response_group" class="reponse">
 				$show_panel
 			</div>
-		</div>
 EOT;
 }else{
 		echo '<div class="edoc_wpet_wrapper">';

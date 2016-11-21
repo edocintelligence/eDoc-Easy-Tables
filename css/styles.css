@@ -2,7 +2,7 @@
     width: 100%;    
 }
 #wpet_main_body{
-    width: 75%;
+    width: 100%;
     float: left;
     display:inline-block;
     }
@@ -19,6 +19,7 @@
     background-color:#efefef;        
     }
 .each_panel,.add_panel{
+	border-radius:5px;
 	width: 210px;
 	float: left;
 	border: 1px solid gray;
@@ -46,7 +47,7 @@
 	margin-right:10px;
 }
 .content_table{
-	width: 100%;
+	width: 75%;
 	float:left;
 	padding:20px 0px;
 }
@@ -170,12 +171,13 @@ input#value_two{
 }
 #create_table_layout{
     float:right;
-    background-color:#9ecc42;
-    background:#9ecc42;
-    border:#9ecc42;
-    box-shadow:0 1px 0 #9ecc42;
+    background-color:#90AB76;
+    background:#90AB76;
+    border:#90AB76;
+    box-shadow:0 1px 0 #90AB76;
     text-shadow:none;
     color: white;
+	text-rendering:auto;
 }
 .wpetEditTables tr{
     background-color:#fafafa;
@@ -186,3 +188,12 @@ input#value_two{
 .wpetEditTables tbody tr:nth-child(even){
     background-color:#fafafa;
     }
+.sidebarTitle {
+    text-align: center;
+}
+.sidebarWrapper {
+    border: 1px solid #d2d2d2;
+    border-radius:5px;
+    margin:2px;
+    padding:5px;
+}
