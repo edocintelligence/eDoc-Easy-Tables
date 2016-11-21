@@ -115,7 +115,18 @@ function edoc_wpet_admin_tables_page(){
 				</div>
 			</div>
 			<div id="wpet_sidebar">
-				sidebar
+				<div class="wpet_sidebarTitle"><h3>Quick Assists</h3></div>
+					<div class="wpet_sidebarHolder">
+						<div class="wpet_sidebarVideo">
+							<iframe width="100%" src="https://www.youtube.com/embed/NZn9xnue0Dk" frameborder="0" allowfullscreen></iframe>
+						</div>
+					<hr>
+						<div class="wpet_sidebarLinks">
+							<a href="#">Quick Help Guide</a>
+							<a href="#">Help Forums</a>
+							<a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=care%40edocintelligence%2ecom&item_name=eDoc%20easy%20tables&item_number=Support%20Open%20Source&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">Donate</a>
+						</div>
+				</div>
 			</div>
 			<div id="wpet_response_group" class="reponse">
 				$show_panel
