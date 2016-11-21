@@ -3,9 +3,21 @@
 Plugin Name: eDoc Easy Tables
 Plugin URI: https://edocintelligence.com/
 Description: Easy to use table tool. Create, update and reporting with intuitive manager interface
-Author: eDoc Intelligence 
+Author: eDoc Intelligence LLC
 Version: 1.25
-author URI: https://edocintelligence.com/
+Text Domain: edoc-easy-tables
+Author URI: https://profiles.wordpress.org/jerodmoore/
+License: GNU General Public License v3 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/
+
+You can contact us at info@edocintelligence.com
+
 */ 
 if ( ! defined( 'ABSPATH' ) ) exit;
 add_action('admin_menu', 'edoc_wpet_create_menu');
