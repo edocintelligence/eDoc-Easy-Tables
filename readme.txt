@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: Tables, table, table manager, responsive tables, tables manager
 Requires at least: 4.2
 Tested up to: 4.7
-Stable tag: 1.27
+Stable tag: 1.26
 
 Super simple table creation, updating, reporting and management. Delegate editing access and send weekly reports as well
 
